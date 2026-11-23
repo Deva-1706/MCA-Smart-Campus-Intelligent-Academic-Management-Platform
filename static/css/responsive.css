@@ -1,0 +1,89 @@
+/* Responsive refinements for desktop (1920, 1440, 1366), tablet (768), and mobile (390, 360) */
+
+@media (max-width: 1199.98px) {
+  .academic-navbar .nav-link {
+    font-size: 0.82rem;
+    padding-inline: 0.45rem;
+  }
+}
+
+@media (max-width: 991.98px) {
+  :root {
+    --public-section-y: 3.75rem;
+  }
+
+  .student-sidebar {
+    border-right: none !important;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .academic-navbar .navbar-collapse {
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+    border-top: 1px solid #3D3835;
+    margin-top: 0.65rem;
+  }
+
+  .academic-navbar .nav-link {
+    padding: 0.5rem 0.25rem;
+  }
+}
+
+@media (max-width: 767.98px) {
+  :root {
+    --public-section-y: 3rem;
+    --public-card-padding: 1.25rem;
+  }
+
+  .public-layout .container,
+  .academic-footer .container {
+    padding-inline: 1rem;
+  }
+
+  .public-section--hero {
+    padding-top: 2.25rem;
+    padding-bottom: 3rem;
+  }
+
+  .hero-title {
+    font-size: 2rem !important;
+    line-height: 1.15;
+  }
+
+  .section-heading {
+    margin-bottom: 1.75rem;
+  }
+
+  .hero-illustration-wrapper {
+    margin-top: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .portal-brand-badge {
+    padding: 3px 7px;
+    font-size: 0.75rem;
+  }
+
+  .brand-text {
+    font-size: 0.92rem;
+  }
+
+  .btn-portal-eq {
+    width: 100%;
+    font-size: 0.88rem;
+  }
+}
+
+@media (max-width: 639.98px) {
+  .auth-login-card {
+    padding: 1.35rem 1.25rem;
+    border-radius: 14px;
+  }
+
+  .auth-demo-grid,
+  .auth-req-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+

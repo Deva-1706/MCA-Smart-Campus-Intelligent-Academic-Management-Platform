@@ -1,0 +1,254 @@
+{% extends 'faculty_base.html' %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-column gap-4">
+    <div class="p-4 bg-white rounded-4 border shadow-sm">
+        <span class="kicker-text">Faculty Instruction &amp; Evaluation Portal</span>
+        <h1 class="h3 fw-bold text-navy mt-1 mb-1">{{ page_title }}</h1>
+        <p class="small text-muted mb-0">
+            Assigned Subjects: {{ subjects|length }} · Active Permissions: {{ faculty_permissions|join:", " }}
+        </p>
+    </div>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags|default:'info' }}{% endif %} small mb-0" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    {% if active_tab == 'faculty_overview' %}
+    <div class="row g-3">
+        <div class="col-md-3"><div class="card smart-campus-card p-3"><small class="text-muted">Pending Skill Evidence</small><h3 class="fw-bold mb-0">{{ pending_skills_count }}</h3></div></div>
+        <div class="col-md-3"><div class="card smart-campus-card p-3"><small class="text-muted">Projects In Review</small><h3 class="fw-bold mb-0">{{ pending_projects_count }}</h3></div></div>
+        <div class="col-md-3"><div class="card smart-campus-card p-3"><small class="text-muted">Question Bank Items</small><h3 class="fw-bold mb-0">{{ question_count }}</h3></div></div>
+        <div class="col-md-3"><div class="card smart-campus-card p-3"><small class="text-muted">Uploaded PDFs</small><h3 class="fw-bold mb-0">{{ materials_count }}</h3></div></div>
+    </div>
+    {% endif %}
+
+    {% if active_tab == 'faculty_materials' %}
+    <div class="card p-4 border rounded-4">
+        <h5 class="fw-bold text-navy mb-3">Upload / Register Subject PDF</h5>
+        <form method="post" enctype="multipart/form-data" class="row g-2">
+            {% csrf_token %}
+            <div class="col-md-2">
+                <select name="subject_code" class="form-select form-select-sm" required>
+                    {% for subj in subjects %}<option value="{{ subj.code }}">{{ subj.code }}</option>{% endfor %}
+                </select>
+            </div>
+            <div class="col-md-3"><input type="text" name="title" class="form-control form-control-sm" placeholder="Document Title" required></div>
+            <div class="col-md-2"><input type="text" name="chapter" class="form-control form-control-sm" placeholder="Chapter"></div>
+            <div class="col-md-1"><input type="number" name="unit" min="1" max="5" value="1" class="form-control form-control-sm"></div>
+            <div class="col-md-2"><input type="file" name="file" accept=".pdf" class="form-control form-control-sm"></div>
+            <div class="col-md-2"><button type="submit" class="btn btn-sm btn-primary-portal w-100">Upload PDF</button></div>
+        </form>
+    </div>
+    <div class="card p-4 border rounded-4">
+        <h5 class="fw-bold text-navy mb-3">Allocated Subject PDFs</h5>
+        <ul class="list-group list-group-flush small">
+            {% for pdf in subject_pdfs %}
+            <li class="list-group-item px-0"><span class="badge bg-danger font-mono me-1">{{ pdf.subject.code }}</span> <strong>{{ pdf.title }}</strong> · Unit {{ pdf.unit }} ({{ pdf.file_name }})</li>
+            {% empty %}<li class="list-group-item px-0 text-muted">No PDFs uploaded for allocated subjects yet.</li>{% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+
+    {% if active_tab == 'faculty_question_bank' %}
+    <div class="card p-4 border rounded-4">
+        <h5 class="fw-bold text-navy mb-3">Add Question Bank Item</h5>
+        <form method="post" class="row g-2">
+            {% csrf_token %}
+            <div class="col-md-2">
+                <select name="subject_code" class="form-select form-select-sm" required>
+                    {% for subj in subjects %}<option value="{{ subj.code }}">{{ subj.code }}</option>{% endfor %}
+                </select>
+            </div>
+            <div class="col-md-1"><input type="number" name="unit" min="1" max="5" value="1" class="form-control form-control-sm"></div>
+            <div class="col-md-3"><input type="text" name="topic" class="form-control form-control-sm" placeholder="Topic" required></div>
+            <div class="col-md-2">
+                <select name="question_type" class="form-select form-select-sm">
+                    <option value="MCQ">MCQ</option><option value="2-Mark">2-Mark</option><option value="5-Mark">5-Mark</option>
+                </select>
+            </div>
+            <div class="col-md-4"><input type="text" name="prompt" class="form-control form-control-sm" placeholder="Question prompt" required></div>
+            <div class="col-md-10"><input type="text" name="answer" class="form-control form-control-sm" placeholder="Model answer / explanation"></div>
+            <div class="col-md-2"><button type="submit" class="btn btn-sm btn-primary-portal w-100">Save Question</button></div>
+        </form>
+    </div>
+    <div class="card p-4 border rounded-4">
+        <h5 class="fw-bold text-navy mb-3">Question Bank Repository</h5>
+        <ul class="list-group list-group-flush small">
+            {% for q in questions %}
+            <li class="list-group-item px-0"><span class="badge bg-danger font-mono me-1">{{ q.subject.code }}</span> <strong>{{ q.prompt }}</strong> <span class="text-muted">(Unit {{ q.unit }} · {{ q.topic }})</span></li>
+            {% empty %}<li class="list-group-item px-0 text-muted">No question bank entries yet.</li>{% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+
+    {% if active_tab == 'faculty_assessments' %}
+    <div class="card p-4 border rounded-4">
+        <h5 class="fw-bold text-navy mb-3">Create Assignment or Examination</h5>
+        <form method="post" class="row g-2">
+            {% csrf_token %}
+            <div class="col-md-2">
+                <select name="kind" class="form-select form-select-sm">
+                    <option value="assignment">Assignment</option><option value="examination">Examination</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <select name="subject_code" class="form-select form-select-sm" required>
+                    {% for subj in subjects %}<option value="{{ subj.code }}">{{ subj.code }}</option>{% endfor %}
+                </select>
+            </div>
+            <div class="col-md-3"><input type="text" name="title" class="form-control form-control-sm" placeholder="Assessment Title" required></div>
+            <div class="col-md-2"><input type="date" name="due_date" class="form-control form-control-sm" required></div>
+            <div class="col-md-1"><input type="number" name="total_marks" min="1" max="200" value="30" class="form-control form-control-sm"></div>
+            <div class="col-md-2"><button type="submit" class="btn btn-sm btn-primary-portal w-100">Publish</button></div>
+        </form>
+    </div>
+    <div class="card p-4 border rounded-4">
+        <h5 class="fw-bold text-navy mb-3">Published Assignments ({{ assignments|length }}) &amp; Exams ({{ examinations|length }})</h5>
+        <ul class="list-group list-group-flush small">
+            {% for a in assignments %}<li class="list-group-item px-0"><span class="badge bg-danger font-mono me-1">{{ a.subject.code }}</span> Assignment: <strong>{{ a.title }}</strong> (Due {{ a.due_date }})</li>{% endfor %}
+            {% for ex in examinations %}<li class="list-group-item px-0"><span class="badge bg-dark font-mono me-1">{{ ex.subject.code }}</span> Exam: <strong>{{ ex.title }}</strong> (Due {{ ex.due_date }})</li>{% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+
+    {% if active_tab == 'faculty_coding_lab' %}
+    <div class="card p-4 border rounded-4">
+        <h5 class="fw-bold text-navy mb-3">Author Coding Lab Problem</h5>
+        <form method="post" class="row g-2">
+            {% csrf_token %}
+            <div class="col-md-4"><input type="text" name="title" class="form-control form-control-sm" placeholder="Problem Title" required></div>
+            <div class="col-md-3"><input type="text" name="category" class="form-control form-control-sm" placeholder="Category (e.g. Trees)"></div>
+            <div class="col-md-2"><select name="difficulty" class="form-select form-select-sm"><option>Easy</option><option selected>Medium</option><option>Hard</option></select></div>
+            <div class="col-md-3"><button type="submit" class="btn btn-sm btn-primary-portal w-100">Publish Problem</button></div>
+            <div class="col-md-6"><textarea name="description" rows="2" class="form-control form-control-sm" placeholder="Problem description..." required></textarea></div>
+            <div class="col-md-6"><textarea name="starter_code" rows="2" class="form-control form-control-sm font-mono" placeholder="def solve(): pass"></textarea></div>
+        </form>
+    </div>
+    {% endif %}
+
+    {% if active_tab == 'faculty_submissions' %}
+    <div class="card p-4 border rounded-4">
+        <h5 class="fw-bold text-navy mb-3">Student Submissions Evaluation Queue</h5>
+        {% for sub in submissions %}
+        <div class="py-3 border-bottom small">
+            <div class="d-flex justify-content-between mb-2">
+                <strong>{{ sub.student.roll_number }} — {{ sub.assignment.title }} ({{ sub.assignment.subject.code }})</strong>
+                <span class="badge bg-secondary">{{ sub.status }}</span>
+            </div>
+            <form method="post" class="row g-2 align-items-center">
+                {% csrf_token %}
+                <input type="hidden" name="submission_id" value="{{ sub.id }}">
+                <div class="col-md-2"><input type="number" name="marks_obtained" min="0" max="{{ sub.assignment.total_marks }}" value="{{ sub.marks_obtained|default:0 }}" class="form-control form-control-sm" required></div>
+                <div class="col-md-8"><input type="text" name="feedback" value="{{ sub.feedback }}" class="form-control form-control-sm" placeholder="Evaluation feedback"></div>
+                <div class="col-md-2"><button type="submit" class="btn btn-sm btn-primary-portal w-100">Grade</button></div>
+            </form>
+        </div>
+        {% empty %}<p class="small text-muted mb-0">No student submissions awaiting grading.</p>{% endfor %}
+    </div>
+    {% endif %}
+
+    {% if active_tab == 'faculty_projects' %}
+    <div class="card p-4 border rounded-4">
+        <h5 class="fw-bold text-navy mb-3">Project Review Queue</h5>
+        {% for proj in projects %}
+        <form method="post" class="py-3 border-bottom row g-2 align-items-center small">
+            {% csrf_token %}
+            <input type="hidden" name="project_id" value="{{ proj.id }}">
+            <div class="col-md-4"><strong>{{ proj.title }}</strong><div class="text-muted">{{ proj.student.roll_number }}</div></div>
+            <div class="col-md-2">
+                <select name="status" class="form-select form-select-sm">
+                    <option value="Under Review" {% if proj.status == 'Under Review' %}selected{% endif %}>Under Review</option>
+                    <option value="Verified" {% if proj.status == 'Verified' %}selected{% endif %}>Verified</option>
+                    <option value="Needs Revision" {% if proj.status == 'Needs Revision' %}selected{% endif %}>Needs Revision</option>
+                </select>
+            </div>
+            <div class="col-md-3"><input type="text" name="faculty_feedback" value="{{ proj.faculty_feedback }}" class="form-control form-control-sm" placeholder="Feedback"></div>
+            <div class="col-md-2"><label><input type="checkbox" name="showcase_approved" {% if proj.showcase_approved %}checked{% endif %}> Showcase</label></div>
+            <div class="col-md-1"><button type="submit" class="btn btn-sm btn-primary-portal">Save</button></div>
+        </form>
+        {% empty %}<p class="small text-muted mb-0">No projects in review queue.</p>{% endfor %}
+    </div>
+    {% endif %}
+
+    {% if active_tab == 'faculty_skill_dna' %}
+    <div class="card p-4 border rounded-4">
+        <h5 class="fw-bold text-navy mb-3">Skill DNA Verification Queue</h5>
+        {% for ev in evidences %}
+        <form method="post" class="py-2 border-bottom row g-2 align-items-center small">
+            {% csrf_token %}
+            <input type="hidden" name="evidence_id" value="{{ ev.id }}">
+            <div class="col-md-5"><strong>{{ ev.title }}</strong> ({{ ev.domain }}) — {{ ev.student.roll_number }}</div>
+            <div class="col-md-3">
+                <select name="status" class="form-select form-select-sm">
+                    <option value="Pending Review" {% if ev.status == 'Pending Review' %}selected{% endif %}>Pending Review</option>
+                    <option value="Verified" {% if ev.status == 'Verified' %}selected{% endif %}>Verified</option>
+                    <option value="Needs Improvement" {% if ev.status == 'Needs Improvement' %}selected{% endif %}>Needs Improvement</option>
+                </select>
+            </div>
+            <div class="col-md-2"><input type="number" name="points" min="0" max="100" value="{{ ev.awarded_points|default:15 }}" class="form-control form-control-sm"></div>
+            <div class="col-md-2"><button type="submit" class="btn btn-sm btn-primary-portal w-100">Update</button></div>
+        </form>
+        {% empty %}<p class="small text-muted mb-0">No skill evidence entries awaiting verification.</p>{% endfor %}
+    </div>
+    {% endif %}
+
+    {% if active_tab == 'faculty_knowledge_graph' %}
+    <div class="card p-4 border rounded-4">
+        <h5 class="fw-bold text-navy mb-3">Add Prerequisite Knowledge Graph Link</h5>
+        <form method="post" class="row g-2">
+            {% csrf_token %}
+            <div class="col-md-2">
+                <select name="subject_code" class="form-select form-select-sm" required>
+                    {% for subj in subjects %}<option value="{{ subj.code }}">{{ subj.code }}</option>{% endfor %}
+                </select>
+            </div>
+            <div class="col-md-4"><input type="text" name="source_node" class="form-control form-control-sm" placeholder="Source Concept" required></div>
+            <div class="col-md-4"><input type="text" name="target_node" class="form-control form-control-sm" placeholder="Target Concept" required></div>
+            <div class="col-md-2"><button type="submit" class="btn btn-sm btn-primary-portal w-100">Link</button></div>
+        </form>
+    </div>
+    {% endif %}
+
+    {% if active_tab == 'faculty_challenges' %}
+    <div class="card p-4 border rounded-4">
+        <h5 class="fw-bold text-navy mb-3">Publish Competitive Challenge</h5>
+        <form method="post" class="row g-2">
+            {% csrf_token %}
+            <div class="col-md-2">
+                <select name="subject_code" class="form-select form-select-sm" required>
+                    {% for subj in subjects %}<option value="{{ subj.code }}">{{ subj.code }}</option>{% endfor %}
+                </select>
+            </div>
+            <div class="col-md-4"><input type="text" name="title" class="form-control form-control-sm" placeholder="Challenge Title" required></div>
+            <div class="col-md-2"><input type="text" name="category" class="form-control form-control-sm" value="Timed Coding"></div>
+            <div class="col-md-2"><input type="number" name="duration_minutes" min="5" max="180" value="20" class="form-control form-control-sm"></div>
+            <div class="col-md-2"><button type="submit" class="btn btn-sm btn-primary-portal w-100">Publish</button></div>
+        </form>
+    </div>
+    {% endif %}
+
+    {% if subjects %}
+    <div class="card p-4 border rounded-4">
+        <h5 class="fw-bold text-navy mb-3">Allocated Courses</h5>
+        <div class="row g-3">
+            {% for subj in subjects %}
+                <div class="col-md-6">
+                    <div class="p-3 rounded-3 border bg-light">
+                        <span class="subject-badge font-mono">{{ subj.code }}</span>
+                        <strong class="ms-2">{{ subj.name }}</strong>
+                        <div class="small text-muted mt-1">{{ subj.credits }} Credits · Instructor: {{ subj.instructor }}</div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

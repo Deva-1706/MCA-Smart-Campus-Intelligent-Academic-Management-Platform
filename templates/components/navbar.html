@@ -1,0 +1,63 @@
+{% load static %}
+<nav class="navbar navbar-expand-lg navbar-dark sticky-top academic-navbar border-bottom">
+    <div class="container">
+        <a class="navbar-brand d-flex align-items-center gap-2" href="{% url 'portal:home' %}#home">
+            <span class="portal-brand-badge">MCA</span>
+            <div class="d-flex flex-column lh-1">
+                <span class="brand-text">MCA SMART CAMPUS</span>
+                <small class="text-gold" style="font-size: 0.65rem;">Beyond Academics. Built for Growth.</small>
+            </div>
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#portalNavbar" aria-controls="portalNavbar" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="portalNavbar">
+            <ul class="navbar-nav mx-auto mb-2 mb-lg-0 gap-lg-1">
+                <li class="nav-item">
+                    <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}" href="{% url 'portal:home' %}#home" data-section-link="home">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.resolver_match.url_name == 'about' %}active{% endif %}" href="{% url 'portal:home' %}#about" data-section-link="about">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.resolver_match.url_name == 'subjects' %}active{% endif %}" href="{% url 'portal:home' %}#subjects" data-section-link="subjects">Subjects</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.resolver_match.url_name == 'features' %}active{% endif %}" href="{% url 'portal:home' %}#features" data-section-link="features">Features</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'portal:home' %}#important-notices" data-section-link="important-notices">Important Notices</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.resolver_match.url_name == 'how_it_works' %}active{% endif %}" href="{% url 'portal:home' %}#how-it-works" data-section-link="how-it-works">How It Works</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.resolver_match.url_name == 'faq' %}active{% endif %}" href="{% url 'portal:home' %}#faq" data-section-link="faq">FAQ</a>
+                </li>
+            </ul>
+
+            <div class="d-flex align-items-center gap-2 pt-2 pt-lg-0">
+                <button class="btn btn-theme-toggle" id="themeToggleBtn" type="button" aria-label="Toggle Light and Dark Theme">
+                    <span class="theme-icon-light">☀️</span>
+                    <span class="theme-icon-dark">🌙</span>
+                </button>
+
+                {% if user.is_authenticated %}
+                    {% if user.roleprofile.role == 'admin' %}
+                        <a href="{% url 'portal:admin_overview' %}" class="btn btn-primary-portal px-3">Admin Portal</a>
+                    {% elif user.roleprofile.role == 'faculty' %}
+                        <a href="{% url 'portal:faculty_overview' %}" class="btn btn-primary-portal px-3">Faculty Portal</a>
+                    {% else %}
+                        <a href="{% url 'portal:dashboard' %}" class="btn btn-primary-portal px-3">Student Portal</a>
+                    {% endif %}
+                {% else %}
+                    <a href="{% url 'portal:login' %}" class="btn btn-primary-portal px-3">
+                        Login
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</nav>

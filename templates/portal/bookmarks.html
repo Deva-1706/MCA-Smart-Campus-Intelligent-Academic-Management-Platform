@@ -1,0 +1,32 @@
+{% extends 'student_base.html' %}
+{% block title %}Bookmarks - MCA Academic Portal{% endblock %}
+{% block content %}
+<div class="d-flex flex-column gap-4">
+    <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+        <div>
+            <h2 class="fw-bold mb-1">Bookmarks</h2>
+            <p class="text-muted small mb-0">Saved study notes and quick-revision materials.</p>
+        </div>
+        <a href="{% url 'portal:materials' %}?filter=bookmarked" class="btn btn-sm btn-primary-portal">Open Bookmarks in Library</a>
+    </div>
+
+    <div class="card p-4 border rounded-4">
+        {% if bookmarked_notes %}
+            <div class="list-group list-group-flush">
+                {% for note in bookmarked_notes %}
+                <a href="{% url 'portal:materials' %}?note_id={{ note.id }}" class="list-group-item list-group-item-action px-0 d-flex justify-content-between align-items-center">
+                    <div>
+                        <span class="badge bg-danger font-mono me-2">{{ note.subject.code }}</span>
+                        <strong>{{ note.title }}</strong>
+                        <div class="small text-muted">Unit {{ note.unit }} · {{ note.topic }} · {{ note.mode }}</div>
+                    </div>
+                    <span class="small font-mono text-muted">Open &rarr;</span>
+                </a>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="small text-muted mb-0">No study notes bookmarked yet. Bookmark notes inside Learning Materials to access them here.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

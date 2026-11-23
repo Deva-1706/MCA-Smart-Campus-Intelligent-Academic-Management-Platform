@@ -1,0 +1,89 @@
+{% extends 'auth_base.html' %}
+{% load static %}
+
+{% block title %}Student Login - MCA SMART CAMPUS{% endblock %}
+
+{% block content %}
+<div class="container py-4 py-md-5">
+    <div class="auth-login-shell">
+        <div class="auth-login-card border" id="authLoginCard" style="border-top: 4px solid #B83232 !important;">
+            <div class="auth-role-switcher" role="group" aria-label="Role login switcher">
+                <a href="{% url 'portal:student_login' %}" class="auth-role-tab {% if expected_role == 'student' or not expected_role %}is-active{% endif %}" data-role="student">Student</a>
+                <a href="{% url 'portal:faculty_login' %}" class="auth-role-tab {% if expected_role == 'faculty' %}is-active{% endif %}" data-role="faculty">Faculty</a>
+                <a href="{% url 'portal:admin_login' %}" class="auth-role-tab {% if expected_role == 'admin' %}is-active{% endif %}" data-role="admin">Admin</a>
+            </div>
+
+            <div class="text-center mb-4">
+                <div class="auth-role-icon auth-role-icon--student mb-2" id="authRoleIcon">STD</div>
+                <p class="text-uppercase fw-bold mb-1" id="authSubtitle" style="font-size: 0.7rem; letter-spacing: 0.08em; color: #B83232;">MCA SMART CAMPUS · STUDENT PORTAL</p>
+                <h3 class="fw-bold mb-1" id="authHeading">Student Portal Login</h3>
+                <p class="text-muted small mb-0" id="authHint">Sign in with your Student ID, university email, or username</p>
+            </div>
+
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags|default:'info' }}{% endif %} small py-2 rounded-3" role="alert">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            {% include 'components/demo_credentials_card.html' %}
+
+            <form method="post" action="{% url 'portal:login' %}" id="authLoginForm" novalidate autocomplete="off">
+                {% csrf_token %}
+
+                <div class="mb-3">
+                    <label for="id_username" class="form-label small fw-semibold mb-1">Student ID, Email, or Username</label>
+                    <input type="text" name="username" class="form-control auth-input" id="id_username" value="{{ remembered_username|default:'' }}" placeholder="Enter Student ID, email, or username" required autofocus>
+                </div>
+
+                <div class="mb-3">
+                    <label for="id_password" class="form-label small fw-semibold mb-1">Password</label>
+                    <div class="auth-password-wrap">
+                        <input type="password" name="password" class="form-control auth-input" id="id_password" value="" placeholder="Enter password" autocomplete="new-password" required>
+                        <button class="auth-toggle-pw-btn" type="button" id="togglePasswordBtn" data-toggle-password="id_password" aria-label="Show password">Show</button>
+                    </div>
+                    <div class="auth-pw-panel" data-pw-meter="id_password">
+                        <div class="d-flex justify-content-between align-items-center" style="font-size: 0.75rem;">
+                            <span class="fw-semibold text-muted">Password Strength</span>
+                            <span class="fw-bold" data-pw-label>Not entered</span>
+                        </div>
+                        <div class="auth-pw-track" role="progressbar" aria-label="Password strength">
+                            <div class="auth-pw-fill" data-pw-bar></div>
+                        </div>
+                        <div class="text-muted" style="font-size: 0.72rem;" data-pw-guidance>Use 8+ characters combining uppercase letters, numbers, and special characters.</div>
+                        <div class="d-flex justify-content-between align-items-center mt-2 pt-2 border-top" style="font-size: 0.7rem;">
+                            <span class="fw-bold text-uppercase text-muted">Password Requirements</span>
+                            <span class="fw-bold text-muted" data-pw-count>0/4 met</span>
+                        </div>
+                        <ul class="auth-req-grid">
+                            <li class="auth-req-item" data-req="length">• Minimum 8 characters</li>
+                            <li class="auth-req-item" data-req="upper">• Uppercase letter (A–Z)</li>
+                            <li class="auth-req-item" data-req="number">• Number (0–9)</li>
+                            <li class="auth-req-item" data-req="special">• Special character (!@#$)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4">
+                    <div class="form-check mb-0">
+                        <input class="form-check-input" type="checkbox" name="remember_me" id="rememberMe" {% if remembered_username %}checked{% endif %}>
+                        <label class="form-check-label small text-muted" for="rememberMe">Remember me ({{ remember_me_days|default:30 }}-day session)</label>
+                    </div>
+                    <a href="{% url 'portal:password_reset' %}" class="small text-decoration-none text-red fw-semibold">Forgot password?</a>
+                </div>
+
+                <button type="submit" class="btn btn-primary-portal auth-submit-btn" id="authSubmitBtn">
+                    Login to Student Portal
+                </button>
+            </form>
+
+            <div class="mt-4 pt-3 text-center border-top d-flex flex-column gap-1">
+                <span class="small text-muted">Role-Enforced Session Authentication · HttpOnly &amp; Rate-Limited</span>
+                <a href="{% url 'portal:home' %}" class="small text-muted text-decoration-none">← Back to Public Website</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

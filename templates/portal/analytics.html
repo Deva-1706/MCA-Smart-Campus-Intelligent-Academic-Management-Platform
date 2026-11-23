@@ -1,0 +1,35 @@
+{% extends 'student_base.html' %}
+{% block title %}Performance Analytics - MCA Academic Portal{% endblock %}
+{% block content %}
+<div class="d-flex flex-column gap-4">
+    <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+        <div>
+            <h2 class="fw-bold mb-1">Performance Analytics</h2>
+            <p class="text-muted small mb-0">Continuous assessment trends, SGPA projection metrics, and practice accuracy.</p>
+        </div>
+        <a href="{% url 'portal:reports' %}" class="btn btn-sm btn-primary-portal">Open Academic Reports</a>
+    </div>
+
+    <div class="row g-3">
+        <div class="col-md-4"><div class="card p-3 border rounded-4"><small class="text-muted">Current SGPA</small><h3 class="fw-bold mb-0 font-mono">{{ student.current_sgpa }}</h3></div></div>
+        <div class="col-md-4"><div class="card p-3 border rounded-4"><small class="text-muted">Exams Recorded</small><h3 class="fw-bold mb-0 font-mono">{{ results|length }}</h3></div></div>
+        <div class="col-md-4"><div class="card p-3 border rounded-4"><small class="text-muted">Practice Sessions</small><h3 class="fw-bold mb-0 font-mono">{{ attempts|length }}</h3></div></div>
+    </div>
+
+    <div class="card p-4 border rounded-4">
+        <h5 class="fw-bold mb-3">Practice &amp; Exam Telemetry</h5>
+        {% if attempts %}
+            <div class="list-group list-group-flush small">
+                {% for a in attempts %}
+                <div class="list-group-item px-0 d-flex justify-content-between">
+                    <span><strong class="font-mono">{{ a.subject.code }}</strong> · {{ a.topic }} ({{ a.mode }})</span>
+                    <span class="font-mono fw-bold">{{ a.score_percent }}%</span>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="small text-muted mb-0">Complete practice quizzes or examinations to view subject-level analytics.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

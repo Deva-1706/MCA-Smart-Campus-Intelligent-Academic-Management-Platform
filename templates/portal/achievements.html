@@ -1,0 +1,26 @@
+{% extends 'student_base.html' %}
+{% block title %}Achievements & Certificates - MCA Academic Portal{% endblock %}
+{% block content %}
+<div>
+            <h2 class="fw-bold mb-1">Achievements &amp; Certificates</h2>
+            <p class="text-muted small mb-4">View your academic achievements, completed activities and certificates. Only earned milestones are unlocked.</p>
+            {% if achievements %}
+                <div class="row g-3">
+                    {% for ach in achievements %}
+                        <div class="col-md-6">
+                            <div class="card p-4 border rounded-4 h-100">
+                                <span class="badge bg-warning text-dark align-self-start mb-2">{{ ach.category }}</span>
+                                <h5 class="fw-bold">{{ ach.title }}</h5>
+                                <p class="small text-muted">{{ ach.description }}</p>
+                                <small class="font-mono text-muted">{{ ach.metric_label }}</small>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="card p-4 border rounded-4 text-muted">
+                    No achievements earned yet. Complete examinations ({{ completed_exams }} completed) or assignments ({{ submitted_assignments }} submitted) to unlock verified milestones and certificates.
+                </div>
+            {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,219 @@
+{% extends 'student_base.html' %}
+
+{% block title %}{{ module_title }}{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-column gap-4">
+    <div class="p-4 bg-white rounded-4 border shadow-sm">
+        <span class="kicker-text">MCA SMART CAMPUS · Growth Module</span>
+        <h1 class="h3 fw-bold text-navy mt-1 mb-1">{{ module_title }}</h1>
+        <p class="small text-muted mb-0">{{ module_subtitle }}</p>
+    </div>
+
+    {% if active_tab == 'academic_intelligence' %}
+    <div class="card p-4 border rounded-4">
+        <h5 class="fw-bold text-navy mb-3">Subject Assessment Diagnostics</h5>
+        {% if results %}
+            <div class="table-responsive">
+                <table class="table table-sm small mb-0">
+                    <thead><tr><th>Subject</th><th>Examination</th><th>Score</th><th>Readiness</th></tr></thead>
+                    <tbody>
+                        {% for res in results %}
+                        <tr>
+                            <td class="font-mono">{{ res.examination.subject.code }}</td>
+                            <td>{{ res.examination.title }}</td>
+                            <td class="font-mono">{{ res.score }}/{{ res.examination.total_marks }}</td>
+                            <td><span class="badge {% if res.passed %}bg-success{% else %}bg-warning text-dark{% endif %}">{% if res.passed %}On Track{% else %}Focus Recommended{% endif %}</span></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <p class="small text-muted mb-0">Complete an examination or practice quiz to populate diagnostics.</p>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    {% if active_tab == 'skill_dna' %}
+    <div class="card p-4 border rounded-4">
+        <h5 class="fw-bold text-navy mb-3">Submit Verified Skill Evidence</h5>
+        <form method="post" class="row g-2">
+            {% csrf_token %}
+            <div class="col-md-3"><input type="text" name="domain" class="form-control form-control-sm" placeholder="Domain (e.g. Python)" required></div>
+            <div class="col-md-4"><input type="text" name="title" class="form-control form-control-sm" placeholder="Evidence Title" required></div>
+            <div class="col-md-3"><input type="url" name="evidence_url" class="form-control form-control-sm" placeholder="https://github.com/..."></div>
+            <div class="col-md-2"><button type="submit" class="btn btn-sm btn-primary-portal w-100">Submit Evidence</button></div>
+        </form>
+    </div>
+    <div class="card p-4 border rounded-4">
+        <h5 class="fw-bold text-navy mb-3">Skill Evidence Log</h5>
+        {% if evidences %}
+            <ul class="list-group list-group-flush small">
+                {% for ev in evidences %}
+                <li class="list-group-item px-0 d-flex justify-content-between align-items-center">
+                    <div><strong>{{ ev.title }}</strong> <span class="text-muted">({{ ev.domain }})</span></div>
+                    <span class="badge {% if ev.status == 'Verified' %}bg-success{% else %}bg-secondary{% endif %}">{{ ev.status }}{% if ev.status == 'Verified' %} · +{{ ev.awarded_points }} pts{% endif %}</span>
+                </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="small text-muted mb-0">No skill evidence submitted yet.</p>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    {% if active_tab == 'project_studio' %}
+    <div class="card p-4 border rounded-4">
+        <h5 class="fw-bold text-navy mb-3">Submit Capstone / Semester Project</h5>
+        <form method="post" class="row g-2">
+            {% csrf_token %}
+            <div class="col-md-4"><input type="text" name="title" class="form-control form-control-sm" placeholder="Project Title" required></div>
+            <div class="col-md-3">
+                <select name="subject_code" class="form-select form-select-sm">
+                    <option value="">General Capstone</option>
+                    {% for subj in subjects %}<option value="{{ subj.code }}">{{ subj.code }} · {{ subj.name }}</option>{% endfor %}
+                </select>
+            </div>
+            <div class="col-md-5"><input type="url" name="github_url" class="form-control form-control-sm" placeholder="Repository URL (optional)"></div>
+            <div class="col-12"><textarea name="summary" rows="2" class="form-control form-control-sm" placeholder="Project architecture and scope summary..." required></textarea></div>
+            <div class="col-12"><button type="submit" class="btn btn-sm btn-primary-portal">Submit for Faculty Review</button></div>
+        </form>
+    </div>
+    <div class="card p-4 border rounded-4">
+        <h5 class="fw-bold text-navy mb-3">My Submitted Projects</h5>
+        {% if projects %}
+            <div class="list-group list-group-flush small">
+                {% for p in projects %}
+                <div class="list-group-item px-0">
+                    <div class="d-flex justify-content-between">
+                        <strong>{{ p.title }}</strong>
+                        <span class="badge {% if p.showcase_approved %}bg-success{% else %}bg-secondary{% endif %}">{{ p.status }}</span>
+                    </div>
+                    <p class="text-muted mb-0 mt-1">{{ p.summary }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="small text-muted mb-0">No projects submitted yet.</p>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    {% if active_tab == 'career_readiness' %}
+    <div class="card p-4 border rounded-4">
+        <h5 class="fw-bold text-navy mb-3">Verified Competency Portfolio</h5>
+        {% if verified_skills %}
+            <ul class="list-group list-group-flush small">
+                {% for sk in verified_skills %}
+                <li class="list-group-item px-0 d-flex justify-content-between">
+                    <span><strong>{{ sk.title }}</strong> · {{ sk.domain }}</span>
+                    <span class="badge bg-success">Verified (+{{ sk.awarded_points }} pts)</span>
+                </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="small text-muted mb-0">Submit skill evidence in Skill DNA to build verified interview readiness credentials.</p>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    {% if active_tab == 'knowledge_graph' %}
+    <div class="card p-4 border rounded-4">
+        <h5 class="fw-bold text-navy mb-3">Curricular Knowledge Prerequisites</h5>
+        {% if edges %}
+            <div class="table-responsive">
+                <table class="table table-sm small mb-0">
+                    <thead><tr><th>Subject</th><th>Source Concept</th><th>Relationship</th><th>Target Concept</th></tr></thead>
+                    <tbody>
+                        {% for e in edges %}
+                        <tr>
+                            <td class="font-mono">{{ e.subject.code }}</td>
+                            <td class="fw-semibold">{{ e.source_node }}</td>
+                            <td class="text-muted">{{ e.relationship }}</td>
+                            <td class="fw-semibold">{{ e.target_node }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <p class="small text-muted mb-0">No curricular prerequisite links configured yet.</p>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    {% if active_tab == 'challenge_arena' %}
+    <div class="card p-4 border rounded-4">
+        <h5 class="fw-bold text-navy mb-3">Published Academic Challenges</h5>
+        {% if challenges %}
+            <div class="row g-3">
+                {% for c in challenges %}
+                <div class="col-md-6">
+                    <div class="p-3 rounded-3 border bg-light d-flex flex-column justify-content-between gap-2 h-100">
+                        <div>
+                            <span class="badge bg-danger font-mono">{{ c.subject.code }}</span>
+                            <span class="badge bg-warning text-dark">{{ c.difficulty }}</span>
+                            <h6 class="fw-bold mt-2 mb-1">{{ c.title }}</h6>
+                            <small class="text-muted">{{ c.category }} · {{ c.duration_minutes }} mins</small>
+                        </div>
+                        <form method="post" class="d-flex gap-2 align-items-center">
+                            {% csrf_token %}
+                            <input type="hidden" name="challenge_id" value="{{ c.id }}">
+                            <input type="number" name="score" min="0" max="100" value="80" class="form-control form-control-sm" style="max-width: 90px;" required>
+                            <button type="submit" class="btn btn-sm btn-primary-portal">Record Attempt</button>
+                        </form>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="small text-muted mb-0">No active challenges published yet.</p>
+        {% endif %}
+    </div>
+    {% if attempts %}
+    <div class="card p-4 border rounded-4">
+        <h5 class="fw-bold text-navy mb-3">My Challenge Attempts</h5>
+        <ul class="list-group list-group-flush small">
+            {% for att in attempts %}
+            <li class="list-group-item px-0 d-flex justify-content-between">
+                <span><strong>{{ att.challenge.title }}</strong></span>
+                <span class="font-mono">{{ att.score }}% · {% if att.passed %}Passed{% else %}Attempted{% endif %}</span>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+    {% endif %}
+
+    {% if active_tab == 'digital_passport' %}
+    <div class="card p-4 border rounded-4">
+        <h5 class="fw-bold text-navy mb-3">Issued Academic Certificates</h5>
+        {% if certificates %}
+            <ul class="list-group list-group-flush small">
+                {% for cert in certificates %}
+                <li class="list-group-item px-0 d-flex justify-content-between">
+                    <span><strong>{{ cert.title }}</strong></span>
+                    <span class="font-mono badge bg-success">{{ cert.certificate_code }}</span>
+                </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="small text-muted mb-0">No institutional certificates issued yet.</p>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    <div class="row g-3">
+        {% for subj in subjects %}
+            <div class="col-md-6 col-lg-3">
+                <div class="card smart-campus-card p-3 h-100">
+                    <span class="subject-badge font-mono align-self-start">{{ subj.code }}</span>
+                    <h6 class="fw-bold text-navy mt-2 mb-1">{{ subj.name }}</h6>
+                    <small class="text-muted">{{ subj.credits }} Credits · {{ subj.instructor }}</small>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

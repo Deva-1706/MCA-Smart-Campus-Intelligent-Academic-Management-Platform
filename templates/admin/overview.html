@@ -1,0 +1,339 @@
+{% extends 'admin_base.html' %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-column gap-4">
+    <div class="p-4 bg-white rounded-4 border shadow-sm">
+        <span class="kicker-text">Admin Governance Portal</span>
+        <h1 class="h3 fw-bold text-navy mt-1 mb-1">{{ page_title }}</h1>
+        <p class="small text-muted mb-0">
+            Configure MCA Programme Semesters 1–4, manage institutional users, oversee subject permissions, and review system audit trails.
+        </p>
+    </div>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags|default:'info' }}{% endif %} small mb-0" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    {% if active_tab == 'admin_overview' %}
+    <div class="row g-3">
+        <div class="col-md-3"><div class="card smart-campus-card p-3"><small class="text-muted">Students</small><h3 class="fw-bold mb-0">{{ students_count }}</h3></div></div>
+        <div class="col-md-3"><div class="card smart-campus-card p-3"><small class="text-muted">Faculty Accounts</small><h3 class="fw-bold mb-0">{{ faculty_count }}</h3></div></div>
+        <div class="col-md-3"><div class="card smart-campus-card p-3"><small class="text-muted">Active Subjects</small><h3 class="fw-bold mb-0">{{ subjects_count }}</h3></div></div>
+        <div class="col-md-3"><div class="card smart-campus-card p-3"><small class="text-muted">Published Notices</small><h3 class="fw-bold mb-0">{{ notices_count }}</h3></div></div>
+    </div>
+    {% endif %}
+
+    {% if active_tab == 'admin_users' %}
+    <div class="card p-4 border rounded-4">
+        <h5 class="fw-bold text-navy mb-3">Provision Institutional Account</h5>
+        <form method="post" action="{% url 'portal:admin_users' %}" class="row g-2" autocomplete="off">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="create_user">
+            <div class="col-md-2"><input type="text" name="full_name" class="form-control form-control-sm" placeholder="Full Name" required></div>
+            <div class="col-md-2"><input type="text" name="institutional_id" class="form-control form-control-sm font-mono" placeholder="ID (e.g. MCA2404)" required></div>
+            <div class="col-md-2"><input type="text" name="username" class="form-control form-control-sm" placeholder="Username" required></div>
+            <div class="col-md-2"><input type="email" name="email" class="form-control form-control-sm" placeholder="University Email"></div>
+            <div class="col-md-2"><input type="password" name="temporary_password" class="form-control form-control-sm" placeholder="Temp Password (8+)" minlength="8" autocomplete="new-password" required></div>
+            <div class="col-md-2 d-flex gap-1">
+                <select name="role" class="form-select form-select-sm">
+                    <option value="student">Student</option>
+                    <option value="faculty">Faculty</option>
+                    <option value="admin">Admin</option>
+                </select>
+                <button type="submit" class="btn btn-primary-portal btn-sm">Create</button>
+            </div>
+        </form>
+        {% if initiated_reset_url %}
+            <div class="alert alert-info small mt-3 mb-0">
+                Time-limited reset link generated for <strong>{{ initiated_reset_user }}</strong>:
+                <code class="ms-1">{{ initiated_reset_url }}</code>
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="card p-4 border rounded-4">
+        <h5 class="fw-bold text-navy mb-3">Registered Institutional Accounts (No Credentials Exposed)</h5>
+        <div class="table-responsive">
+            <table class="table table-sm align-middle small mb-0">
+                <thead>
+                    <tr><th>ID</th><th>User</th><th>Role</th><th>Status</th><th>First Login</th><th>Actions</th></tr>
+                </thead>
+                <tbody>
+                    {% for rp in role_profiles %}
+                    <tr>
+                        <td class="font-mono fw-bold">{{ rp.institutional_id }}</td>
+                        <td>
+                            <div class="fw-semibold">{{ rp.user.get_full_name|default:rp.user.username }}</div>
+                            <div class="text-muted">{{ rp.user.username }} · {{ rp.user.email }}</div>
+                        </td>
+                        <td>
+                            <form method="post" action="{% url 'portal:admin_users' %}" class="d-flex gap-1">
+                                {% csrf_token %}
+                                <input type="hidden" name="action" value="change_role">
+                                <input type="hidden" name="role_profile_id" value="{{ rp.id }}">
+                                <select name="role" class="form-select form-select-sm">
+                                    <option value="student" {% if rp.role == 'student' %}selected{% endif %}>Student</option>
+                                    <option value="faculty" {% if rp.role == 'faculty' %}selected{% endif %}>Faculty</option>
+                                    <option value="admin" {% if rp.role == 'admin' %}selected{% endif %}>Admin</option>
+                                </select>
+                                <button type="submit" class="btn btn-outline-secondary btn-sm">Set</button>
+                            </form>
+                        </td>
+                        <td>
+                            <span class="badge {% if rp.is_active and rp.user.is_active %}bg-success{% else %}bg-danger{% endif %}">
+                                {% if rp.is_active and rp.user.is_active %}Active{% else %}Inactive{% endif %}
+                            </span>
+                        </td>
+                        <td>{% if rp.must_change_password %}Setup Required{% else %}Verified{% endif %}</td>
+                        <td class="d-flex gap-1">
+                            <form method="post" action="{% url 'portal:admin_users' %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="action" value="toggle_active">
+                                <input type="hidden" name="role_profile_id" value="{{ rp.id }}">
+                                <button type="submit" class="btn btn-outline-secondary btn-sm">{% if rp.is_active %}Deactivate{% else %}Activate{% endif %}</button>
+                            </form>
+                            <form method="post" action="{% url 'portal:admin_users' %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="action" value="initiate_password_reset">
+                                <input type="hidden" name="role_profile_id" value="{{ rp.id }}">
+                                <button type="submit" class="btn btn-outline-danger btn-sm">Initiate Reset</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% if page_obj and page_obj.paginator.num_pages > 1 %}
+        <div class="d-flex justify-content-between align-items-center mt-3 small">
+            <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+            <div class="d-flex gap-2">
+                {% if page_obj.has_previous %}<a href="?page={{ page_obj.previous_page_number }}" class="btn btn-sm btn-outline-secondary">Previous</a>{% endif %}
+                {% if page_obj.has_next %}<a href="?page={{ page_obj.next_page_number }}" class="btn btn-sm btn-outline-secondary">Next</a>{% endif %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    {% if active_tab == 'admin_academics' %}
+    <div class="card p-4 border rounded-4">
+        <h5 class="fw-bold text-navy mb-3">Configure MCA Semester (1–4)</h5>
+        <form method="post" class="row g-2">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="configure_semester">
+            <div class="col-md-2"><input type="number" name="semester_number" min="1" max="4" value="1" class="form-control form-control-sm" required></div>
+            <div class="col-md-4"><input type="text" name="title" class="form-control form-control-sm" placeholder="Semester Title" required></div>
+            <div class="col-md-4"><input type="text" name="description" class="form-control form-control-sm" placeholder="Description"></div>
+            <div class="col-md-2 d-flex align-items-center gap-2">
+                <label class="small"><input type="checkbox" name="is_configured" checked> Active</label>
+                <button type="submit" class="btn btn-sm btn-primary-portal">Save</button>
+            </div>
+        </form>
+    </div>
+    <div class="card p-4 border rounded-4">
+        <h5 class="fw-bold text-navy mb-3">Add Subject</h5>
+        <form method="post" class="row g-2">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="add_subject">
+            <div class="col-md-2"><input type="text" name="code" class="form-control form-control-sm font-mono" placeholder="Code (e.g. 435C2A)" required></div>
+            <div class="col-md-4"><input type="text" name="name" class="form-control form-control-sm" placeholder="Subject Name" required></div>
+            <div class="col-md-2"><input type="number" name="credits" min="1" max="8" value="4" class="form-control form-control-sm"></div>
+            <div class="col-md-2"><input type="text" name="instructor" class="form-control form-control-sm" placeholder="Instructor"></div>
+            <div class="col-md-2"><button type="submit" class="btn btn-sm btn-primary-portal w-100">Add Subject</button></div>
+        </form>
+    </div>
+    {% endif %}
+
+    {% if active_tab == 'admin_allocations' %}
+    <div class="card p-4 border rounded-4">
+        <h5 class="fw-bold text-navy mb-3">Assign Faculty Subjects &amp; Permissions</h5>
+        {% if faculty_profiles %}
+        <form method="post" class="d-flex flex-column gap-3">
+            {% csrf_token %}
+            <div>
+                <label class="form-label small fw-semibold">Faculty Account</label>
+                <select name="faculty_id" class="form-select form-select-sm" style="max-width: 360px;">
+                    {% for fp in faculty_profiles %}
+                    <option value="{{ fp.user.id }}">{{ fp.user.get_full_name|default:fp.user.username }} ({{ fp.institutional_id }})</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div>
+                <label class="form-label small fw-semibold">Allocated Subjects</label>
+                <div class="d-flex flex-wrap gap-3 small">
+                    {% for subj in subjects %}
+                    <label><input type="checkbox" name="subject_codes" value="{{ subj.code }}"> {{ subj.code }} · {{ subj.name }}</label>
+                    {% endfor %}
+                </div>
+            </div>
+            <div>
+                <label class="form-label small fw-semibold">Faculty Permissions</label>
+                <div class="d-flex flex-wrap gap-3 small">
+                    {% for perm in all_permissions %}
+                    <label><input type="checkbox" name="permissions" value="{{ perm }}"> {{ perm }}</label>
+                    {% endfor %}
+                </div>
+            </div>
+            <button type="submit" class="btn btn-sm btn-primary-portal align-self-start">Save Allocations</button>
+        </form>
+        {% else %}
+            <p class="small text-muted mb-0">No faculty accounts registered yet.</p>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    {% if active_tab == 'admin_materials' %}
+    <div class="card p-4 border rounded-4">
+        <h5 class="fw-bold text-navy mb-3">Register / Upload Subject PDF</h5>
+        <form method="post" enctype="multipart/form-data" class="row g-2">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="add_pdf">
+            <div class="col-md-2">
+                <select name="subject_code" class="form-select form-select-sm" required>
+                    {% for subj in subjects %}<option value="{{ subj.code }}">{{ subj.code }}</option>{% endfor %}
+                </select>
+            </div>
+            <div class="col-md-3"><input type="text" name="title" class="form-control form-control-sm" placeholder="Document Title" required></div>
+            <div class="col-md-2"><input type="text" name="chapter" class="form-control form-control-sm" placeholder="Chapter"></div>
+            <div class="col-md-1"><input type="number" name="unit" min="1" max="5" value="1" class="form-control form-control-sm"></div>
+            <div class="col-md-2"><input type="file" name="file" accept=".pdf" class="form-control form-control-sm"></div>
+            <div class="col-md-2"><button type="submit" class="btn btn-sm btn-primary-portal w-100">Add PDF</button></div>
+        </form>
+    </div>
+    <div class="card p-4 border rounded-4">
+        <h5 class="fw-bold text-navy mb-3">Uploaded Subject PDFs</h5>
+        <div class="list-group list-group-flush small">
+            {% for pdf in subject_pdfs %}
+            <div class="list-group-item px-0 d-flex justify-content-between align-items-center">
+                <div><span class="badge bg-danger font-mono me-1">{{ pdf.subject.code }}</span> <strong>{{ pdf.title }}</strong> <span class="text-muted">({{ pdf.file_name }})</span></div>
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="delete_pdf">
+                    <input type="hidden" name="pdf_id" value="{{ pdf.id }}">
+                    <button type="submit" class="btn btn-sm btn-outline-danger">Remove</button>
+                </form>
+            </div>
+            {% empty %}
+            <p class="text-muted mb-0">No PDFs registered yet.</p>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    {% if active_tab == 'admin_notices' %}
+    <div class="card p-4 border rounded-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="fw-bold text-navy mb-0">Notice Governance</h5>
+            <a href="{% url 'portal:manage_notices' %}" class="btn btn-sm btn-primary-portal">Create New Notice</a>
+        </div>
+        {% for notice in notices %}
+        <div class="py-2 border-bottom d-flex justify-content-between align-items-center small">
+            <div>
+                <span class="badge {% if notice.is_published %}bg-success{% else %}bg-secondary{% endif %} me-1">{% if notice.is_published %}Published{% else %}Draft{% endif %}</span>
+                <strong>{{ notice.title }}</strong> <span class="text-muted">({{ notice.priority }})</span>
+            </div>
+            <div class="d-flex gap-2">
+                <form method="post">
+                    {% csrf_token %}<input type="hidden" name="action" value="toggle"><input type="hidden" name="notice_id" value="{{ notice.id }}">
+                    <button type="submit" class="btn btn-sm btn-outline-secondary">{% if notice.is_published %}Unpublish{% else %}Publish{% endif %}</button>
+                </form>
+                <form method="post">
+                    {% csrf_token %}<input type="hidden" name="action" value="delete"><input type="hidden" name="notice_id" value="{{ notice.id }}">
+                    <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+        {% empty %}
+        <p class="small text-muted mb-0">No notices present.</p>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if active_tab == 'admin_certificates' %}
+    <div class="card p-4 border rounded-4">
+        <h5 class="fw-bold text-navy mb-3">Issue Official Certificate</h5>
+        <form method="post" class="row g-2">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="issue">
+            <div class="col-md-4">
+                <select name="student_id" class="form-select form-select-sm" required>
+                    {% for st in students %}<option value="{{ st.id }}">{{ st.roll_number }} · {{ st.user.get_full_name|default:st.user.username }}</option>{% endfor %}
+                </select>
+            </div>
+            <div class="col-md-6"><input type="text" name="title" class="form-control form-control-sm" placeholder="Certificate Title" required></div>
+            <div class="col-md-2"><button type="submit" class="btn btn-sm btn-primary-portal w-100">Issue</button></div>
+        </form>
+    </div>
+    <div class="card p-4 border rounded-4">
+        <h5 class="fw-bold text-navy mb-3">Issued Certificates</h5>
+        {% for cert in certificates %}
+        <div class="py-2 border-bottom d-flex justify-content-between align-items-center small">
+            <div><span class="font-mono badge bg-success me-1">{{ cert.certificate_code }}</span> <strong>{{ cert.title }}</strong> — {{ cert.student.roll_number }}</div>
+            <form method="post">
+                {% csrf_token %}<input type="hidden" name="action" value="revoke"><input type="hidden" name="certificate_id" value="{{ cert.id }}">
+                <button type="submit" class="btn btn-sm btn-outline-danger">Revoke</button>
+            </form>
+        </div>
+        {% empty %}
+        <p class="small text-muted mb-0">No certificates issued yet.</p>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if active_tab == 'admin_audit_logs' %}
+    <div class="card p-4 border rounded-4">
+        <h5 class="fw-bold text-navy mb-3">Authentication &amp; Governance Audit Log</h5>
+        <div class="table-responsive">
+            <table class="table table-sm small mb-0">
+                <thead><tr><th>Timestamp</th><th>Actor</th><th>Role</th><th>Action</th><th>Target</th><th>IP</th></tr></thead>
+                <tbody>
+                    {% for log in audit_logs %}
+                    <tr>
+                        <td class="font-mono">{{ log.timestamp }}</td>
+                        <td>{{ log.actor.username|default:'system' }}</td>
+                        <td>{{ log.role }}</td>
+                        <td class="fw-semibold">{{ log.action }}</td>
+                        <td class="font-mono">{{ log.target }}</td>
+                        <td class="font-mono">{{ log.ip_address|default:'-' }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% if page_obj and page_obj.paginator.num_pages > 1 %}
+        <div class="d-flex justify-content-between align-items-center mt-3 small">
+            <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+            <div class="d-flex gap-2">
+                {% if page_obj.has_previous %}<a href="?page={{ page_obj.previous_page_number }}" class="btn btn-sm btn-outline-secondary">Previous</a>{% endif %}
+                {% if page_obj.has_next %}<a href="?page={{ page_obj.next_page_number }}" class="btn btn-sm btn-outline-secondary">Next</a>{% endif %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    {% if subjects %}
+    <div class="card p-4 border rounded-4">
+        <h5 class="fw-bold text-navy mb-3">Semester 1 Confirmed Courses (Admin-Governed)</h5>
+        <div class="row g-3">
+            {% for subj in subjects %}
+                <div class="col-md-6">
+                    <div class="p-3 rounded-3 border bg-light">
+                        <span class="subject-badge font-mono">{{ subj.code }}</span>
+                        <strong class="ms-2">{{ subj.name }}</strong>
+                        <div class="small text-muted mt-1">{{ subj.credits }} Credits · {{ subj.instructor }}</div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

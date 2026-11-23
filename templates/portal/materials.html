@@ -1,0 +1,190 @@
+{% extends 'student_base.html' %}
+{% block title %}Learning Materials &amp; AI Study Notes - MCA Academic Portal{% endblock %}
+{% block content %}
+<div class="pb-5">
+    <div class="row g-4">
+        <!-- Left Comprehensive Syllabus & Notes Hierarchy Sidebar -->
+        <div class="col-lg-4 col-xl-3 d-print-none">
+            <div class="card border rounded-4 overflow-hidden">
+                <div class="p-3 bg-navy text-white border-bottom border-danger border-3">
+                    <div class="small font-mono text-warning fw-bold text-uppercase mb-2">Syllabus &amp; Notes Explorer</div>
+                    <form method="get" action="{% url 'portal:materials' %}" class="space-y-2">
+                        <select name="subject" class="form-select form-select-sm mb-2" onchange="this.form.submit()">
+                            <option value="">All MCA Subjects</option>
+                            {% for sub in subjects %}
+                                <option value="{{ sub.code }}" {% if active_subject_code == sub.code %}selected{% endif %}>
+                                    {{ sub.code }} - {{ sub.name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                        <input
+                            type="search"
+                            name="search"
+                            value="{{ search_q }}"
+                            class="form-control form-control-sm mb-2"
+                            placeholder="Filter topics or notes..."
+                        >
+                        <div class="d-flex gap-1">
+                            <select name="filter" class="form-select form-select-sm">
+                                <option value="all" {% if filter_type == 'all' %}selected{% endif %}>All</option>
+                                <option value="bookmarked" {% if filter_type == 'bookmarked' %}selected{% endif %}>Bookmarked</option>
+                                <option value="revision" {% if filter_type == 'revision' %}selected{% endif %}>Revision</option>
+                                <option value="completed" {% if filter_type == 'completed' %}selected{% endif %}>Completed</option>
+                            </select>
+                            <button type="submit" class="btn btn-sm btn-warning fw-bold">Go</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="p-3" style="max-height: 460px; overflow-y: auto;">
+                    {% for u in "12345" %}
+                        <div class="mb-3">
+                            <div class="small font-mono fw-bold text-danger text-uppercase mb-1">Unit {{ u }}</div>
+                            <div class="list-group list-group-flush border-start border-2 ps-2">
+                                {% for n in notes %}
+                                    {% if n.unit|stringformat:"s" == u %}
+                                        <a href="?note_id={{ n.id }}{% if active_subject_code %}&subject={{ active_subject_code }}{% endif %}"
+                                           class="list-group-item list-group-item-action py-2 px-2 rounded-2 small {% if selected_note and selected_note.id == n.id %}active{% endif %}">
+                                            <div class="d-flex justify-content-between font-mono" style="font-size: 11px;">
+                                                <span>{{ n.subject.code }}</span>
+                                                <span>{{ n.mode }}</span>
+                                            </div>
+                                            <div class="fw-bold text-truncate">{{ n.topic }}</div>
+                                        </a>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                    {% if not notes %}
+                        <p class="small text-muted mb-0">No saved study notes yet. Use the floating generation toolbar below to generate notes.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Academic Reading Pane -->
+        <div class="col-lg-8 col-xl-9">
+            {% if messages %}
+                {% for msg in messages %}
+                    <div class="alert alert-{{ msg.tags|default:'info' }} rounded-3 small d-print-none">{{ msg }}</div>
+                {% endfor %}
+            {% endif %}
+
+            {% if selected_note %}
+                <article class="card border rounded-4 overflow-hidden">
+                    <header class="p-4 p-md-5 bg-navy text-white border-bottom border-danger border-4">
+                        <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 small font-mono text-warning mb-2">
+                            <span>{{ selected_note.subject.code }} / UNIT {{ selected_note.unit }} / {{ selected_note.mode|upper }}</span>
+                            <button type="button" onclick="window.print()" class="btn btn-outline-light btn-sm d-print-none">Print View</button>
+                        </div>
+                        <h1 class="h3 fw-bold mb-2">{{ selected_note.title }}</h1>
+                        <p class="small opacity-75 mb-3">
+                            Topic: <strong>{{ selected_note.topic }}</strong>
+                            {% if selected_note.subtopic %} — {{ selected_note.subtopic }}{% endif %}
+                            · Grounded Sources: {{ selected_note.source_pdfs|join:", "|default:"Course PDF" }}
+                        </p>
+                        <div class="d-flex flex-wrap gap-2 d-print-none">
+                            <form method="post" action="{% url 'portal:study_note_action' selected_note.id %}" class="d-flex flex-wrap gap-2">
+                                {% csrf_token %}
+                                <button name="action" value="toggle_completed" class="btn btn-sm {% if selected_note.is_completed %}btn-success{% else %}btn-outline-light{% endif %}">
+                                    {% if selected_note.is_completed %}Completed{% else %}Mark Read{% endif %}
+                                </button>
+                                <button name="action" value="toggle_bookmark" class="btn btn-sm {% if selected_note.is_bookmarked %}btn-warning text-dark{% else %}btn-outline-light{% endif %}">
+                                    {% if selected_note.is_bookmarked %}Bookmarked{% else %}Bookmark{% endif %}
+                                </button>
+                                <button name="action" value="toggle_revision" class="btn btn-sm {% if selected_note.needs_revision %}btn-danger{% else %}btn-outline-light{% endif %}">
+                                    {% if selected_note.needs_revision %}In Revision{% else %}Save for Revision{% endif %}
+                                </button>
+                            </form>
+                        </div>
+                    </header>
+
+                    <div class="p-4 p-md-5" style="max-width: 76ch; margin: 0 auto;">
+                        {% if not selected_note.is_pdf_sufficient and selected_note.supplementary_notice %}
+                            <div class="alert alert-warning small mb-4">
+                                <strong>Supplementary Academic Note:</strong> {{ selected_note.supplementary_notice }}
+                            </div>
+                        {% endif %}
+
+                        {% if selected_note.summary %}
+                            <section class="p-4 rounded-3 bg-light border-start border-danger border-4 mb-5">
+                                <div class="small font-mono fw-bold text-danger text-uppercase mb-1">Executive Overview</div>
+                                <p class="mb-0 lh-lg">{{ selected_note.summary }}</p>
+                            </section>
+                        {% endif %}
+
+                        {% for sec in selected_note.sections_json %}
+                            <section class="mb-5 pb-4 border-bottom">
+                                <div class="d-flex justify-content-between align-items-baseline gap-2 mb-3">
+                                    <h2 class="h5 fw-bold mb-0">
+                                        <span class="font-mono text-danger me-2">{{ forloop.counter|stringformat:"02d" }}.</span>
+                                        {{ sec.heading }}
+                                    </h2>
+                                    <span class="badge {% if sec.sourceTag == 'AI-Supplementary' %}bg-warning text-dark{% else %}bg-success{% endif %}">
+                                        {{ sec.sourceTag|default:"PDF-Grounded" }}
+                                    </span>
+                                </div>
+                                {% if sec.formula %}
+                                    <pre class="p-3 bg-light border rounded font-mono small mb-3">{{ sec.formula }}</pre>
+                                {% endif %}
+                                <div class="lh-lg" style="white-space: pre-wrap;">{{ sec.markdown }}</div>
+                                {% if sec.diagram %}
+                                    <pre class="p-3 mt-3 bg-dark text-warning rounded font-mono small">{{ sec.diagram }}</pre>
+                                {% endif %}
+                                {% if sec.codeSnippet %}
+                                    <pre class="p-3 mt-3 bg-dark text-light rounded font-mono small">{{ sec.codeSnippet }}</pre>
+                                {% endif %}
+                                {% if sec.expectedOutput %}
+                                    <pre class="p-2 mt-2 bg-secondary bg-opacity-10 border rounded font-mono small">Output: {{ sec.expectedOutput }}</pre>
+                                {% endif %}
+                            </section>
+                        {% endfor %}
+                    </div>
+                </article>
+            {% else %}
+                <div class="card p-5 text-center border rounded-4">
+                    <h4 class="fw-bold mb-2">Study Notes Reader</h4>
+                    <p class="text-muted small mb-0">Select a unit/topic note from the sidebar or use the floating generation toolbar below to generate Detailed Notes, 2-Mark, 5-Mark, 10-Mark, or Solved Examples.</p>
+                </div>
+            {% endif %}
+
+            <!-- Floating Generation Toolbar -->
+            <div class="position-sticky bottom-0 mt-4 p-3 rounded-4 bg-navy text-white shadow-lg border border-secondary d-print-none" style="z-index: 20;">
+                <form method="post" action="{% url 'portal:generate_study_notes' %}" class="row g-2 align-items-center">
+                    {% csrf_token %}
+                    <div class="col-md-3">
+                        <select name="subject_code" class="form-select form-select-sm" required>
+                            {% for sub in subjects %}
+                                <option value="{{ sub.code }}" {% if active_subject_code == sub.code %}selected{% endif %}>{{ sub.code }} - {{ sub.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <select name="unit" class="form-select form-select-sm">
+                            <option value="1">Unit 1</option>
+                            <option value="2">Unit 2</option>
+                            <option value="3">Unit 3</option>
+                            <option value="4">Unit 4</option>
+                            <option value="5">Unit 5</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="text" name="topic" class="form-control form-control-sm" placeholder="Topic (e.g. AVL Trees / BCNF / CNF)" required>
+                    </div>
+                    <div class="col-md-3">
+                        <input type="text" name="subtopic" class="form-control form-control-sm" placeholder="Subtopic focus (optional)">
+                    </div>
+                    <div class="col-12 d-flex flex-wrap gap-2 pt-1">
+                        {% for m in mode_choices %}
+                            <button type="submit" name="mode" value="{{ m }}" class="btn {% if m == 'Detailed Notes' %}btn-danger{% else %}btn-outline-light{% endif %} btn-sm fw-bold">
+                                {{ m }}
+                            </button>
+                        {% endfor %}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

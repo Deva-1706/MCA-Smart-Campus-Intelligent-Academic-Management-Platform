@@ -1,0 +1,1068 @@
+# MASTER PROMPT — MCA SMART CAMPUS WEBSITE RESTRUCTURING
+
+## 1. Project Overview
+
+Transform my existing Django-based academic assessment website into a complete, modern, responsive academic management and intelligent learning platform named:
+
+**MCA SMART CAMPUS**
+
+**Tagline:** Beyond Academics. Built for Growth.
+
+This is a restructuring and enhancement of an existing project, NOT a request to create a new project from scratch.
+
+The objective is to transform the existing website into a unified platform for:
+
+- Academic administration.
+- Faculty teaching and assessment management.
+- Student learning and academic development.
+- AI-powered learning assistance.
+- Practical programming and project development.
+- Skill development and career preparation.
+- Academic performance analysis.
+
+The final application must feel like a professionally developed academic technology product with its own visual identity, navigation, workflows and user experience.
+
+Do not copy the design or proprietary interface of Sunstone Hub or any other platform. Use other academic platforms only as general functional references.
+
+---
+
+## 2. CRITICAL INSTRUCTIONS — EXISTING PROJECT PRESERVATION
+
+Before modifying anything, inspect the entire existing project.
+
+Existing project location:
+
+`D:\My Cloud\python_assessment`
+
+Existing technology stack:
+
+- Python 3.13
+- Django 5.2
+- SQLite
+- HTML
+- CSS
+- JavaScript
+- Bootstrap 5
+- Chart.js
+- Existing Monaco Editor integration
+
+Existing Django applications include:
+
+- accounts
+- dashboard
+- subjects
+- assessments
+- coding_lab
+- materials
+- results
+- analytics
+
+The application may contain additional modules and dependencies. Discover them rather than assuming this list is exhaustive.
+
+### Strict preservation rules
+
+1. Do not recreate the project.
+2. Do not replace the existing Django backend with another framework.
+3. Do not delete the existing SQLite database.
+4. Do not reset or overwrite existing student records.
+5. Do not remove existing examination functionality.
+6. Preserve existing assessment attempts, marks, results and uploaded materials.
+7. Preserve working application features and reuse existing implementations.
+8. Avoid unnecessary package installations.
+9. Avoid unnecessary migrations and database schema changes.
+10. Never remove a model or database field without inspecting its dependencies and planning a safe migration.
+11. Do not use dummy information as actual institutional records.
+12. Do not claim a feature works until it has been tested.
+
+First produce an audit of the existing project, including its applications, models, URLs, templates, authentication, database relationships, static files, JavaScript and current functionality.
+
+Then create a safe restructuring plan.
+
+---
+
+# 3. NEW PRODUCT IDENTITY AND DESIGN SYSTEM
+
+Product name:
+
+**MCA SMART CAMPUS**
+
+Tagline:
+
+**Beyond Academics. Built for Growth.**
+
+### Brand colours
+
+Use this colour system consistently:
+
+- Primary Red: `#B83232`
+- Brown: `#795548`
+- Yellow: `#F2C94C`
+- Dark Gray: `#292929`
+- White: `#FFFFFF`
+- Off-white and neutral backgrounds as appropriate.
+
+Use red for important actions and emphasis, brown for supporting elements, yellow for meaningful highlights, and dark gray for typography and navigation.
+
+### Design requirements
+
+Create a modern academic technology interface with:
+
+- Professional typography.
+- Consistent spacing.
+- Carefully designed cards.
+- Clean dashboard layouts.
+- Responsive navigation.
+- Consistent buttons and forms.
+- Attractive data tables.
+- Meaningful charts.
+- Appropriate icons.
+- Clear visual hierarchy.
+- Accessible colour contrast.
+- Responsive layouts for desktop, tablet and mobile.
+- Consistent loading, empty, error and success states.
+
+Avoid excessive gradients, unnecessary animations, oversized cards and decorative elements that interfere with usability.
+
+Create a reusable design system rather than independently styling every page.
+
+---
+
+# 4. APPLICATION ARCHITECTURE
+
+The application must have three independent role-based workspaces.
+
+1. Admin Portal.
+2. Faculty Portal.
+3. Student Portal.
+
+All three must use the same Django authentication backend, database and central user management system.
+
+However, each must have its own login experience, navigation, dashboard and permissions.
+
+### Required login pages
+
+- `/admin-login/`
+- `/faculty-login/`
+- `/student-login/`
+
+Each login page should have:
+
+- Role-specific branding.
+- Username or institutional ID.
+- Password.
+- Show/hide password.
+- Forgot password.
+- Form validation.
+- Appropriate error messages.
+- Secure session handling.
+- Correct role-based redirects.
+
+Important security requirements:
+
+- A user must not gain access by selecting a different login page.
+- The backend must verify the actual assigned role.
+- Inactive users must not log in.
+- Faculty permissions must be checked on the server.
+- Students must only access their own records.
+- Faculty must only access authorised subjects and students.
+- Admin-only actions must remain protected.
+
+Use shared authentication logic while keeping the three user experiences separate.
+
+---
+
+# 5. PUBLIC WEBSITE RESTRUCTURING
+
+Build a complete public-facing MCA Smart Campus website.
+
+The public website must be visually and functionally separate from authenticated dashboards.
+
+### Public website sections
+
+1. Home
+2. About
+3. MCA Programme
+4. Semesters
+5. Subjects
+6. Platform Features
+7. Learning Experience
+8. AI-Powered Learning
+9. Projects and Skills
+10. Career Development
+11. Important Notices
+12. How It Works
+13. Frequently Asked Questions
+14. Contact
+15. Login Portals
+
+### Homepage requirements
+
+Create a strong homepage that communicates the purpose of MCA Smart Campus.
+
+Include:
+
+- Hero section.
+- Product introduction.
+- Academic learning features.
+- AI learning capabilities.
+- Programming and practical development.
+- Skill and career development.
+- Academic management capabilities.
+- Important notices preview.
+- Clear calls to action.
+- Login portal links.
+- Professional footer.
+
+Make the homepage useful and informative, not just visually attractive.
+
+### Public and private separation
+
+The public website must use its own navigation.
+
+Authenticated dashboards must not display the public website navigation.
+
+The student workspace must not accidentally render homepage sections.
+
+The faculty workspace must not accidentally render student dashboard content.
+
+The admin workspace must have its own management interface.
+
+---
+
+# 6. ADMIN PORTAL
+
+Create a complete administrative workspace.
+
+### Admin modules
+
+1. Admin Overview.
+2. User Management.
+3. Student Management.
+4. Faculty Management.
+5. Academic Year Management.
+6. Semester Management.
+7. Programme Management.
+8. Subject Management.
+9. Unit and Topic Management.
+10. Faculty Subject Allocation.
+11. Student Enrolment.
+12. Assignment Management.
+13. Examination Management.
+14. Question Bank Management.
+15. Evaluation Management.
+16. Gradebook.
+17. Results Management.
+18. Learning Materials Management.
+19. AI Learning Configuration.
+20. Coding Lab Configuration.
+21. Practice Arena Management.
+22. Important Notices.
+23. Academic Calendar.
+24. Achievements and Certificates.
+25. Institutional Analytics.
+26. System Settings.
+27. Audit Logs.
+
+### Administrative capabilities
+
+- Create and manage student accounts.
+- Create and manage faculty accounts.
+- Activate and deactivate accounts.
+- Assign students to academic semesters.
+- Manage subjects and units.
+- Allocate faculty to subjects.
+- Assign individual faculty permissions.
+- Manage examinations and assessments.
+- Manage question banks.
+- Review institutional results.
+- Publish authorised results.
+- Manage approved learning materials.
+- Configure platform-wide learning features.
+- Monitor platform activity.
+- Generate reports.
+
+Sensitive operations must include appropriate confirmation and audit logging.
+
+Keep Django technical superuser privileges separate from ordinary institutional administrator roles.
+
+---
+
+# 7. FACULTY PORTAL
+
+Create a separate faculty workspace.
+
+### Faculty modules
+
+1. Faculty Overview.
+2. My Profile.
+3. My Assigned Subjects.
+4. Subject Units and Topics.
+5. Student Groups.
+6. Learning Materials.
+7. AI Notes Generation.
+8. Question Bank.
+9. Assignment Creation.
+10. Assignment Evaluation.
+11. Examination Creation.
+12. Examination Evaluation.
+13. Descriptive Answer Evaluation.
+14. Coding Submission Evaluation.
+15. Marks and Gradebook.
+16. Results Access.
+17. Practice Arena Content.
+18. Project Reviews.
+19. Academic Calendar.
+20. Notices.
+21. Subject-wise Analytics.
+
+### Faculty permission system
+
+Implement two complementary permission mechanisms:
+
+**A. Subject-based permissions**
+
+Faculty can access subjects and associated student groups allocated by the administrator.
+
+**B. Individual permissions**
+
+Administrators can separately grant permissions such as:
+
+- Create assessments.
+- Edit assessments.
+- Evaluate submissions.
+- View marks.
+- Publish marks.
+- Manage learning materials.
+- Create challenges.
+- Review projects.
+- Verify skills.
+
+A faculty member must not automatically receive every permission simply because a subject is allocated.
+
+All permissions must be enforced in Django views, services and APIs.
+
+Display Faculty Advisor exactly as:
+
+`HCASICAN`
+
+Do not invent additional institutional faculty identity information.
+
+---
+
+# 8. STUDENT PORTAL
+
+Create a dedicated learning-focused student workspace.
+
+### Student modules
+
+1. Student Overview.
+2. My Profile.
+3. My Courses.
+4. My Semesters.
+5. My Subjects.
+6. Learning Materials.
+7. AI Detailed Notes.
+8. AI Study Assistant.
+9. Question Bank.
+10. Assignments.
+11. Examinations.
+12. Coding Lab.
+13. Practice Arena.
+14. Academic Intelligence Centre.
+15. Skill DNA.
+16. Project Studio.
+17. Career Readiness Lab.
+18. Smart Study Planner.
+19. Knowledge Graph.
+20. Challenge Arena.
+21. Digital Academic Passport.
+22. AI Flashcards and Revision.
+23. Bookmarks.
+24. Performance Analytics.
+25. Academic Reports.
+26. Achievements and Certificates.
+27. Academic Calendar.
+28. Notifications.
+
+Every student must see their own enrolled subjects, academic activities, submissions, results and verified achievements.
+
+---
+
+# 9. ACADEMIC STRUCTURE — ALL MCA SEMESTERS
+
+Support the complete MCA programme across all four semesters.
+
+Academic hierarchy:
+
+MCA Programme → Academic Year → Semester → Subject → Unit → Topic.
+
+Each subject must support:
+
+- Subject code.
+- Subject name.
+- Description.
+- Semester.
+- Units.
+- Topics.
+- Learning objectives.
+- Materials.
+- Assessments.
+- Examinations.
+- Question banks.
+- AI learning notes.
+- Knowledge Graph relationships.
+- Practice activities.
+
+### Confirmed Semester 1 subjects
+
+Preserve these exact subject names and codes:
+
+| Subject | Subject Code |
+|---|---|
+| Discrete Mathematics | 435C1A |
+| Data Structures and Algorithms | 435C1B |
+| Data Engineering and Management | 435E1A |
+| Python Programming | 435C1C |
+
+Semester 2, 3 and 4 subjects, codes and syllabi must be configurable by administrators.
+
+Do not invent official subject names, codes, syllabus content or institutional academic dates.
+
+---
+
+# 10. EIGHT UNIQUE MCA SMART CAMPUS FEATURES
+
+These features must be integrated into the existing Admin, Faculty and Student architecture. They must not be implemented as disconnected standalone applications.
+
+## Feature 1 — Academic Intelligence Centre
+
+A unified academic decision-support system.
+
+Student capabilities:
+
+- Semester-wise performance.
+- Subject-wise performance.
+- Assessment progress.
+- Weak-topic identification.
+- Strength analysis.
+- Pending academic activities.
+- Recommended next steps.
+
+Faculty capabilities:
+
+- Assigned-subject performance.
+- Student progress analysis.
+- Common learning difficulties.
+- Assessment completion.
+- Subject-level reports.
+
+Admin capabilities:
+
+- Institution-wide academic insights.
+- Semester comparisons.
+- Subject-level reports.
+- Academic performance monitoring.
+
+All insights must be grounded in actual application records.
+
+## Feature 2 — Skill DNA
+
+An evidence-based student skill profile.
+
+Track skills such as:
+
+- Python.
+- Data Structures.
+- Database Management.
+- Web Development.
+- Mathematics.
+- Problem-solving.
+- Software Engineering.
+- Communication.
+- Teamwork.
+
+Student capabilities:
+
+- View skill levels.
+- View evidence.
+- Track development history.
+- Identify skill gaps.
+
+Faculty capabilities:
+
+- Verify practical evidence.
+- Evaluate demonstrated skills.
+- Recommend improvements.
+
+Admin capabilities:
+
+- Configure skill categories.
+- Configure evaluation criteria.
+- Monitor skill development.
+
+Do not award skill levels simply for viewing lessons or generating AI notes.
+
+## Feature 3 — Project Studio
+
+A practical project management and portfolio environment.
+
+Student capabilities:
+
+- Create projects.
+- Add descriptions and objectives.
+- Select technologies.
+- Link GitHub repositories.
+- Link live demos.
+- Upload project screenshots and documents.
+- Track milestones.
+- Record contributions.
+- Submit for review.
+
+Faculty capabilities:
+
+- Assign projects.
+- Review submissions.
+- Provide feedback.
+- Verify project completion.
+- Evaluate project skills.
+
+Admin capabilities:
+
+- Manage project policies.
+- Manage project categories.
+- Monitor participation.
+- Publish approved project showcases.
+
+## Feature 4 — Career Readiness Lab
+
+Create a career development environment.
+
+Modules:
+
+- Technical interview preparation.
+- Python interview questions.
+- DSA practice.
+- Aptitude preparation.
+- Verbal reasoning.
+- Mock interviews.
+- Communication practice.
+- Resume preparation.
+- Portfolio preparation.
+- Job-description skill-gap analysis.
+- Internship preparation.
+
+Clearly distinguish practice results from actual employer evaluations or placement outcomes.
+
+## Feature 5 — Smart Study Planner
+
+A personalised study planning system.
+
+Student capabilities:
+
+- Daily study schedules.
+- Weekly study plans.
+- Subject-wise goals.
+- Unit completion tracking.
+- Examination preparation.
+- Revision schedules.
+- Progress monitoring.
+- Recommended study activities.
+
+Faculty capabilities:
+
+- Publish revision recommendations.
+- Recommend subject-specific activities.
+- Provide learning schedules.
+
+Admin capabilities:
+
+- Publish academic dates.
+- Manage official calendar events.
+- Configure examination schedules.
+
+Never automatically modify official academic dates.
+
+## Feature 6 — Knowledge Graph
+
+Create an interactive visual knowledge network.
+
+Connect:
+
+- Semesters.
+- Subjects.
+- Units.
+- Topics.
+- Concepts.
+- Prerequisites.
+- Learning materials.
+- Assessments.
+- Practical projects.
+
+Students can explore concept relationships and identify prerequisite learning paths.
+
+Faculty can create and verify concept relationships.
+
+Administrators can manage the official academic taxonomy.
+
+AI-generated relationships must be reviewed before becoming official academic mappings.
+
+## Feature 7 — Challenge Arena
+
+Create an interactive subject and programming challenge platform.
+
+Categories:
+
+- Python.
+- Data Structures and Algorithms.
+- SQL.
+- Database Management.
+- Discrete Mathematics.
+- Data Engineering.
+- Aptitude.
+- Subject-based quizzes.
+- Timed coding challenges.
+
+Students can:
+
+- Attempt challenges.
+- View results.
+- Read explanations.
+- Track improvements.
+- Earn achievements.
+- Participate in optional competitions.
+
+Faculty can create and review challenges.
+
+Administrators can manage challenge categories and competition policies.
+
+Use isolated code execution for untrusted student code. Never execute student code directly within the Django application process.
+
+## Feature 8 — Digital Academic Passport
+
+Create a verified academic and professional portfolio.
+
+Include:
+
+- Student profile.
+- Academic history.
+- Approved achievements.
+- Verified certificates.
+- Completed projects.
+- Demonstrated skills.
+- Challenge achievements.
+- Faculty-verified project reviews.
+- Portfolio links.
+
+Faculty can verify authorised evidence.
+
+Administrators can issue and revoke certificates and configure verification rules.
+
+Students must control the visibility of their shareable passport.
+
+Do not expose private marks or sensitive personal information publicly without explicit permission.
+
+---
+
+# 11. AI-POWERED LEARNING AND KNOWLEDGE SYSTEM
+
+Enhance the existing AI learning functionality.
+
+AI-generated content must be subject-specific, detailed, useful for university examination preparation and grounded in approved learning materials.
+
+### Required capabilities
+
+- PDF and document ingestion.
+- Text extraction.
+- OCR for scanned documents where required.
+- Document chunking.
+- Source metadata.
+- Subject-wise knowledge collections.
+- Unit-wise organisation.
+- Retrieval-augmented generation.
+- Source references.
+- Detailed study notes.
+- Important questions.
+- Short and long answers.
+- Flashcards.
+- Practice quizzes.
+- Topic explanations.
+- Revision recommendations.
+
+### Anti-hallucination requirements
+
+- Prefer uploaded and faculty-approved materials.
+- Display source references when available.
+- Do not invent textbook pages or citations.
+- Clearly identify AI-generated suggestions.
+- Distinguish verified academic content from generated explanations.
+- Allow faculty to review and approve generated materials.
+- Preserve document and subject relationships.
+
+Do not replace the existing AI implementation without auditing its current capabilities.
+
+---
+
+# 12. EXISTING FUNCTIONALITY THAT MUST BE PRESERVED
+
+Inspect and retain the existing implementations of:
+
+- Authentication.
+- Student dashboard.
+- Subjects.
+- Assessments.
+- Examinations.
+- Coding Lab.
+- Learning materials.
+- Results.
+- Analytics.
+- Monaco Editor integration.
+
+Improve them where necessary, but preserve working functionality and existing data.
+
+### Features explicitly excluded
+
+Completely remove the Faculty Communication module and Attendance Tracker from the intended product.
+
+Before removing associated code, inspect dependencies and existing database records. Do not destroy unrelated data or introduce broken migrations.
+
+Remove visible UI references to:
+
+- Django Files.
+- Blueprint.
+
+These are UI cleanup requirements. Do not remove the Django framework, real project files or unrelated backend functionality.
+
+---
+
+# 13. SHARED BACKEND ARCHITECTURE
+
+Inspect the existing Django application boundaries before deciding whether to create or reorganise apps.
+
+Potential logical domains include:
+
+- accounts
+- administration
+- faculty
+- students
+- academics
+- enrolments
+- subjects
+- materials
+- ai_learning
+- assessments
+- examinations
+- question_bank
+- evaluation
+- coding_lab
+- practice_arena
+- analytics
+- results
+- skill_dna
+- project_studio
+- career_readiness
+- study_planner
+- knowledge_graph
+- challenge_arena
+- academic_passport
+- notifications
+- notices
+- calendar
+- achievements
+- certificates
+- audit_logs
+
+This is a logical architecture proposal, not an instruction to create all these Django apps blindly.
+
+Reuse existing apps wherever possible.
+
+### Shared services
+
+Implement reusable services for:
+
+- Identity and permissions.
+- Academic structure.
+- Student enrolment.
+- Faculty allocation.
+- Academic progress.
+- Assessment and results.
+- Evidence and verification.
+- Learning resources.
+- AI knowledge retrieval.
+- Coding execution.
+- Notifications.
+- Analytics.
+- Audit logging.
+
+Avoid duplicated business logic across applications.
+
+---
+
+# 14. DATABASE AND MIGRATION STRATEGY
+
+Preserve the current SQLite database during the initial restructuring.
+
+Before migrations:
+
+1. Inspect current models.
+2. Inspect the existing database.
+3. Identify current relationships.
+4. Create a database backup.
+5. Identify migration dependencies.
+6. Design additive migrations.
+7. Test migrations on a backup or staging copy.
+8. Verify existing records after migration.
+
+Do not switch databases during initial UI restructuring.
+
+Evaluate PostgreSQL separately before production deployment.
+
+All academic records must be properly associated with:
+
+- Student.
+- Academic year.
+- Programme.
+- Semester.
+- Subject.
+- Assessment or examination.
+- Authorised faculty where applicable.
+
+Preserve historical academic records when structures change.
+
+---
+
+# 15. UI/UX RESTRUCTURING REQUIREMENTS
+
+Completely review and improve the current interface.
+
+### Public website
+
+- Independent public navbar.
+- Functional sections.
+- Correct scrolling.
+- Responsive layouts.
+- Proper login portal navigation.
+
+### Admin workspace
+
+- Dedicated sidebar.
+- Management-focused dashboard.
+- Search and filtering.
+- Tables and analytics.
+- User and permission management.
+
+### Faculty workspace
+
+- Dedicated faculty sidebar.
+- Subject-focused dashboard.
+- Assessment management.
+- Evaluation interfaces.
+- Learning insights.
+
+### Student workspace
+
+- Dedicated student sidebar.
+- Learning-focused dashboard.
+- Academic progress.
+- AI learning.
+- Programming.
+- Projects and skills.
+
+### Navigation and scrolling
+
+Fix all navigation and scrolling issues.
+
+Verify:
+
+- Navbar links.
+- Sidebar links.
+- Dropdown menus.
+- Browser back and forward.
+- Direct URL access.
+- Page refresh.
+- Nested routes.
+- Long-page scrolling.
+- Modal scrolling.
+- Responsive navigation.
+- Login redirects.
+- Logout redirects.
+
+No page should unexpectedly render content from another role's workspace.
+
+Avoid duplicated headers, overlapping sidebars, nested scrolling problems and broken page layouts.
+
+---
+
+# 16. TESTING AND QUALITY ASSURANCE
+
+Do not stop after changing templates or CSS.
+
+Perform a complete functional audit.
+
+### Authentication testing
+
+- Admin login.
+- Faculty login.
+- Student login.
+- Invalid credentials.
+- Inactive accounts.
+- Role mismatch.
+- Session persistence.
+- Logout.
+- Password reset.
+- Direct URL access.
+
+### Permission testing
+
+- Admin-only actions.
+- Faculty subject restrictions.
+- Individual faculty permissions.
+- Student record isolation.
+- Unauthorized result access.
+- File access permissions.
+
+### Feature testing
+
+Test every existing and newly implemented module.
+
+### UI testing
+
+- Desktop.
+- Tablet.
+- Mobile.
+- Navbar.
+- Sidebar.
+- Scrolling.
+- Forms.
+- Buttons.
+- Tables.
+- Charts.
+- Modals.
+- Empty states.
+- Error states.
+- Loading states.
+
+### Technical testing
+
+- Django system checks.
+- Database migrations.
+- URL resolution.
+- Template rendering.
+- Static file loading.
+- JavaScript console errors.
+- Backend exceptions.
+- Database integrity.
+- Browser automation where available.
+
+Create or update automated tests for critical workflows.
+
+Never report a test as successful unless it was actually executed.
+
+---
+
+# 17. IMPLEMENTATION ROADMAP
+
+Implement in controlled stages.
+
+**Stage 1:** Existing project audit and preservation plan.
+
+**Stage 2:** Brand identity, design system and public website.
+
+**Stage 3:** Three role-specific login experiences and secure shared authentication.
+
+**Stage 4:** Admin, Faculty and Student dashboard shells.
+
+**Stage 5:** All-semester academic management foundation.
+
+**Stage 6:** Existing assessment, examination, materials, results and Coding Lab integration.
+
+**Stage 7:** Academic Intelligence Centre.
+
+**Stage 8:** Knowledge Graph.
+
+**Stage 9:** Smart Study Planner.
+
+**Stage 10:** Challenge Arena.
+
+**Stage 11:** Skill DNA.
+
+**Stage 12:** Project Studio.
+
+**Stage 13:** Career Readiness Lab.
+
+**Stage 14:** Digital Academic Passport.
+
+**Stage 15:** AI learning improvements and system-wide integration.
+
+**Stage 16:** Complete QA, security review and deployment preparation.
+
+Do not try to implement the entire system in one uncontrolled change.
+
+At each stage:
+
+1. Inspect relevant files.
+2. Identify dependencies.
+3. Plan changes.
+4. Implement incrementally.
+5. Run relevant tests.
+6. Fix regressions.
+7. Report changed files.
+8. Report tests actually performed.
+9. Record remaining issues.
+10. Preserve existing functionality.
+
+---
+
+# 18. FINAL ACCEPTANCE CRITERIA
+
+The project is considered successfully restructured only when:
+
+- The existing Django project is preserved.
+- Existing database records remain intact.
+- The public website works independently.
+- Admin, Faculty and Student have separate workspaces.
+- All three login flows work securely.
+- Role permissions are enforced server-side.
+- All four MCA semesters are supported.
+- Existing examinations and assessments work.
+- Learning materials and results work.
+- Coding Lab works.
+- All eight unique features are integrated.
+- AI learning uses approved source materials.
+- The user interface is consistent and responsive.
+- Navigation and scrolling work correctly.
+- Important notices display correctly.
+- No unintended Faculty Communication or Attendance Tracker functionality remains.
+- No visible Django Files or Blueprint UI remains.
+- Critical automated tests pass.
+- No known critical security or data-integrity issue remains.
+
+---
+
+# 19. FINAL WORKING INSTRUCTION
+
+Start by inspecting the existing project in:
+
+`D:\My Cloud\python_assessment`
+
+**Do not start coding immediately.**
+
+First return an audit report containing:
+
+1. Existing project architecture.
+2. Existing Django applications.
+3. Database and model relationships.
+4. Existing features and their status.
+5. Authentication and permission problems.
+6. UI/UX problems.
+7. Existing bugs and errors.
+8. Reusable components.
+9. Data preservation risks.
+10. Proposed restructuring plan.
+11. Dependency map.
+12. Staged implementation plan.
+
+After presenting the audit, proceed with implementation in controlled stages, preserving the existing project and database.
+
+Do not claim completion prematurely.
+
+The final goal is a reliable, professional, unique **MCA SMART CAMPUS** platform that connects academic management, intelligent learning, practical development and career readiness in one integrated system.

@@ -1,0 +1,283 @@
+html.dark .auth-demo-card {
+  background-color: #242220;
+  border-color: var(--color-border);
+}
+
+html.dark .auth-demo-field-box {
+  background-color: var(--color-card);
+  border-color: var(--color-border) !important;
+}
+
+html.dark .auth-demo-code {
+  background-color: #1A1918;
+  color: #F7F5F2 !important;
+}
+
+html.dark .auth-demo-pill {
+  background-color: #1A1918;
+  border-color: var(--color-border);
+  color: var(--color-text-muted);
+}
+
+html.dark .auth-demo-fill-btn {
+  background-color: #1E1E1E;
+  color: #F2C94C;
+  border-color: rgba(242, 201, 76, 0.4);
+}
+
+html.dark .auth-demo-fill-btn:hover {
+  background-color: #141414;
+  color: #FCD34D;
+}
+
+/* Light and Dark Mode Themes with Red, Brown, Yellow, Dark Gray Palette */
+html.dark {
+  --color-primary: #B83232;
+  --color-primary-hover: #D32F2F;
+  --color-secondary: #795548;
+  --color-secondary-light: #A1887F;
+  --color-accent: #F2C94C;
+  --color-accent-hover: #FCD34D;
+  --color-dark: #141414;
+  --color-white: #FFFFFF;
+  --color-background: #1E1E1E;
+  --color-surface-alt: #242220;
+  --color-card: #292929;
+  --color-border: #3D3835;
+  --color-text: #F7F5F2;
+  --color-text-muted: #BDB7B2;
+}
+
+html.dark body.academic-body {
+  background-color: var(--color-background);
+  color: var(--color-text);
+}
+
+html.dark .academic-navbar {
+  background-color: rgba(20, 20, 20, 0.98);
+  border-color: var(--color-border);
+}
+
+html.dark .public-section--alt {
+  background-color: var(--color-surface-alt);
+  border-color: var(--color-border);
+}
+
+html.dark .public-section--dark {
+  background-color: #161514;
+}
+
+html.dark .public-card,
+html.dark .smart-campus-card,
+html.dark .subject-card,
+html.dark .metric-item,
+html.dark .empty-notice-box,
+html.dark .faq-accordion-item,
+html.dark .faq-accordion-item .accordion-button,
+html.dark .login-card,
+html.dark .student-sidebar,
+html.dark .card {
+  background-color: var(--color-card);
+  border-color: var(--color-border);
+  color: var(--color-text);
+}
+
+html.dark .public-card--accent,
+html.dark .subject-card {
+  border-top-color: var(--color-primary);
+}
+
+html.dark .public-card--dark {
+  background-color: #1E1E1E;
+  border-color: #3D3835;
+  color: #F7F5F2;
+}
+
+html.dark .faq-accordion-item .accordion-button::after {
+  filter: invert(0.9);
+}
+
+html.dark .faq-accordion-item .accordion-button:not(.collapsed) {
+  color: var(--color-accent);
+}
+
+html.dark .faq-category-btn {
+  background-color: var(--color-card);
+  border-color: var(--color-border);
+  color: var(--color-text);
+}
+
+html.dark .faq-category-btn.is-active {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #FFFFFF;
+}
+
+html.dark .public-icon-box {
+  background-color: rgba(184, 50, 50, 0.18);
+  border-color: rgba(184, 50, 50, 0.35);
+  color: #F28B82;
+}
+
+html.dark .public-icon-box--gold {
+  background-color: rgba(242, 201, 76, 0.16);
+  border-color: rgba(242, 201, 76, 0.35);
+  color: var(--color-accent);
+}
+
+html.dark .public-icon-box--brown {
+  background-color: rgba(141, 110, 99, 0.22);
+  border-color: rgba(141, 110, 99, 0.4);
+  color: #D7CCC8;
+}
+
+html.dark .bg-surface {
+  background-color: var(--color-surface-alt);
+}
+
+html.dark .text-muted {
+  color: var(--color-text-muted) !important;
+}
+
+html.dark .form-control,
+html.dark .form-select {
+  background-color: #1E1E1E;
+  border-color: var(--color-border);
+  color: #F7F5F2;
+}
+
+html.dark .form-control::placeholder {
+  color: #9E9791;
+}
+
+html.dark .form-control:focus,
+html.dark .form-select:focus {
+  background-color: #292929;
+  border-color: var(--color-primary);
+  color: #F7F5F2;
+  box-shadow: 0 0 0 0.2rem rgba(184, 50, 50, 0.25);
+}
+
+html.dark .subject-badge {
+  background: #3E2723;
+  color: #FFE082;
+  border-color: #5D4037;
+}
+
+html.dark .text-navy,
+html.dark .text-dark-gray {
+  color: #F7F5F2 !important;
+}
+
+html.dark .academic-login-dropdown {
+  background-color: var(--color-card);
+  border-color: var(--color-border);
+}
+
+html.dark .academic-login-dropdown .dropdown-item {
+  color: #F7F5F2;
+}
+
+html.dark .academic-login-dropdown .dropdown-item:hover,
+html.dark .academic-login-dropdown .dropdown-item:focus-visible {
+  background-color: #1E1E1E;
+  color: var(--color-accent);
+}
+
+/* Theme switch button */
+.btn-theme-toggle {
+  background: transparent;
+  border: 1px solid #4A4440;
+  border-radius: 8px;
+  padding: 6px 10px;
+  color: #F7F5F2;
+  transition: all 0.2s ease;
+}
+
+.btn-theme-toggle:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+.theme-icon-dark {
+  display: inline-block;
+  color: var(--color-accent);
+}
+.theme-icon-light {
+  display: none;
+  color: var(--color-accent);
+}
+
+html.dark .theme-icon-dark {
+  display: none;
+}
+html.dark .theme-icon-light {
+  display: inline-block;
+}
+
+html.dark .auth-login-card {
+  background-color: var(--color-card);
+  border-color: var(--color-border);
+  color: var(--color-text);
+}
+
+html.dark .auth-role-switcher {
+  background-color: #1E1E1E;
+  border-color: var(--color-border);
+}
+
+html.dark .auth-role-tab {
+  color: var(--color-text-muted);
+}
+
+html.dark .auth-role-tab:hover {
+  color: #FFFFFF;
+}
+
+html.dark .auth-role-tab.is-active {
+  color: #FFFFFF;
+}
+
+html.dark .auth-input {
+  background-color: #1E1E1E;
+  border-color: var(--color-border);
+  color: var(--color-text);
+}
+
+html.dark .auth-input::placeholder {
+  color: #8D857E;
+}
+
+html.dark .auth-input:focus {
+  background-color: #242220;
+}
+
+html.dark .auth-toggle-pw-btn {
+  color: var(--color-text-muted);
+}
+
+html.dark .auth-toggle-pw-btn:hover {
+  background-color: #292929;
+  color: var(--color-accent);
+}
+
+html.dark .auth-pw-panel,
+html.dark .auth-demo-box {
+  background-color: #1E1E1E;
+  border-color: var(--color-border);
+}
+
+html.dark .auth-demo-cell {
+  background-color: #292929;
+  border-color: var(--color-border);
+}
+
+html.dark .auth-req-item.is-met {
+  color: #4ADE80;
+}
+
+html.dark .auth-demo-autofill-msg {
+  color: #6EE7B7;
+  background-color: rgba(6, 78, 59, 0.35);
+  border-color: rgba(16, 185, 129, 0.4);
+}

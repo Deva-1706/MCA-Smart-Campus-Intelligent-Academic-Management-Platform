@@ -1,0 +1,58 @@
+{% extends 'student_base.html' %}
+{% block title %}AI Flashcards & Revision - MCA Academic Portal{% endblock %}
+{% block content %}
+<div>
+            <h2 class="fw-bold mb-1">AI Flashcards &amp; Revision</h2>
+            <p class="text-muted small mb-4">Generate flashcards from uploaded subject PDFs and revise important concepts.</p>
+
+            <div class="card p-4 border rounded-4 mb-4">
+                <h5 class="fw-bold mb-3">Generate Flashcard Deck</h5>
+                <form method="post" class="row g-3">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="create_deck">
+                    <div class="col-md-4">
+                        <select name="subject_code" class="form-select" required>
+                            {% for subj in subjects %}
+                                <option value="{{ subj.code }}">{{ subj.code }} - {{ subj.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <input type="number" name="unit" min="1" max="5" value="1" class="form-control" required>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="text" name="topic" class="form-control" placeholder="Topic (e.g. Normal Forms)" required>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-primary-portal w-100">Generate</button>
+                    </div>
+                </form>
+            </div>
+
+            {% for deck in decks %}
+                <div class="card p-4 border rounded-4 mb-3">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="badge bg-danger font-mono">{{ deck.subject.code }} · Unit {{ deck.unit }}</span>
+                        <small class="text-muted">{{ deck.source_pdf.file_name|default:"Subject PDF" }}</small>
+                    </div>
+                    <h5 class="fw-bold">{{ deck.title }}</h5>
+                    {% for card in deck.cards.all %}
+                        <div class="p-3 mt-2 rounded bg-light border">
+                            <p class="fw-semibold mb-1">{{ card.question }}</p>
+                            <p class="small text-muted mb-2">{{ card.answer }}</p>
+                            <form method="post" class="d-flex gap-2">
+                                {% csrf_token %}
+                                <input type="hidden" name="action" value="update_card">
+                                <input type="hidden" name="card_id" value="{{ card.id }}">
+                                <button type="submit" name="status" value="Known" class="btn btn-sm btn-outline-success">Mark Known</button>
+                                <button type="submit" name="status" value="Need Revision" class="btn btn-sm btn-outline-warning">Need Revision</button>
+                                <span class="badge bg-secondary align-self-center ms-auto">{{ card.status }}</span>
+                            </form>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% empty %}
+                <div class="card p-4 border rounded-4 text-muted">No flashcard decks saved yet.</div>
+            {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,232 @@
+{% extends 'student_base.html' %}
+{% block title %}Student Dashboard - MCA Academic Portal{% endblock %}
+
+{% block content %}
+<div class="space-y-4">
+            <!-- Header -->
+            <div class="p-4 rounded-4 bg-navy text-white d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+                <div>
+                    <div class="d-flex flex-wrap gap-2 mb-2">
+                        <span class="badge bg-danger font-mono">{{ student.student_id|default:"MCA2401" }}</span>
+                        <span class="badge bg-warning text-dark font-mono">Roll No: {{ student.roll_number|default:"P26CA125" }}</span>
+                        <span class="small opacity-75">Semester {{ student.semester|default:1 }} · {{ today_date }}</span>
+                    </div>
+                    <h2 class="fw-bold mb-1">Welcome back, {{ display_name }}</h2>
+                    <p class="small mb-0 opacity-75">Faculty Advisor: <strong class="text-warning">{{ student.advisor_name|default:"HCASICAN" }}</strong></p>
+                </div>
+                <div class="d-flex gap-2">
+                    <a href="{% url 'portal:notifications' %}" class="btn btn-outline-light btn-sm">
+                        Notifications ({{ unread_notifications_count }})
+                    </a>
+                    <a href="{% url 'portal:profile' %}" class="btn btn-warning btn-sm fw-bold">
+                        My Profile
+                    </a>
+                </div>
+            </div>
+
+            <!-- Global Search Bar -->
+            <form method="get" action="{% url 'portal:dashboard' %}" class="card p-3 border rounded-4 mb-4">
+                <div class="input-group">
+                    <input
+                        type="search"
+                        name="q"
+                        value="{{ search_query|default:'' }}"
+                        class="form-control"
+                        placeholder="Search subjects (435C1A–435C1C), assignments, PDFs, or AI study notes..."
+                        aria-label="Global academic search"
+                    >
+                    <button type="submit" class="btn btn-primary-portal fw-bold">Search</button>
+                    {% if search_query %}
+                        <a href="{% url 'portal:dashboard' %}" class="btn btn-outline-secondary">Clear</a>
+                    {% endif %}
+                </div>
+            </form>
+
+            {% if search_query %}
+                <div class="card p-4 border rounded-4 mb-4">
+                    <h6 class="fw-bold mb-3">Search Results for "{{ search_query }}" ({{ search_results|length }})</h6>
+                    {% if search_results %}
+                        <div class="list-group list-group-flush">
+                            {% for item in search_results %}
+                                <a href="{% url item.url_name %}" class="list-group-item list-group-item-action px-0 d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <span class="badge bg-danger me-2">{{ item.category }}</span>
+                                        <strong>{{ item.title }}</strong>
+                                        <div class="small text-muted">{{ item.subtitle }}</div>
+                                    </div>
+                                    <span class="small fw-bold text-danger">Open &rarr;</span>
+                                </a>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <p class="text-muted small mb-0">No subjects, assignments, PDFs, or study notes matched "{{ search_query }}".</p>
+                    {% endif %}
+                </div>
+            {% endif %}
+
+            <!-- Real Stats -->
+            <div class="row g-3 mb-4">
+                <div class="col-6 col-md-3">
+                    <div class="card p-3 h-100 border rounded-3">
+                        <small class="text-muted fw-bold">Total Subjects</small>
+                        <h3 class="fw-bold font-mono mb-0">{{ total_subjects_count }}</h3>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="card p-3 h-100 border rounded-3">
+                        <small class="text-muted fw-bold">Assignments</small>
+                        <h3 class="fw-bold font-mono mb-0">{{ pending_assignments_count }} Pending</h3>
+                        <small class="text-muted">{{ submitted_assignments_count }} Submitted</small>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="card p-3 h-100 border rounded-3">
+                        <small class="text-muted fw-bold">Examinations</small>
+                        <h3 class="fw-bold font-mono mb-0">{{ upcoming_exams_count }} Due</h3>
+                        <small class="text-muted">{{ completed_exams_count }} Completed</small>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="card p-3 h-100 border rounded-3">
+                        <small class="text-muted fw-bold">Latest Score</small>
+                        <h3 class="fw-bold font-mono mb-0">
+                            {% if latest_exam_result %}{{ latest_exam_result.score }}{% else %}No attempts{% endif %}
+                        </h3>
+                        <small class="text-muted">SGPA {{ student.current_sgpa|default:"8.85" }}</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Weekly Subject Study Goals -->
+            <div class="card p-4 border rounded-4 mb-4">
+                <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+                    <div>
+                        <span class="small fw-bold text-uppercase text-danger font-mono">Weekly Study Goals · {{ weekly_goal_week }}</span>
+                        <h5 class="fw-bold mb-0">Subject-Wise Target Learning Hours</h5>
+                    </div>
+                    <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#weeklyGoalTargetForm" aria-expanded="false">
+                        Edit Targets
+                    </button>
+                </div>
+
+                <div class="collapse mb-3" id="weeklyGoalTargetForm">
+                    <form method="post" action="{% url 'portal:dashboard' %}" class="p-3 rounded-3 bg-light border">
+                        {% csrf_token %}
+                        <input type="hidden" name="goal_action" value="update_targets">
+                        <div class="row g-2">
+                            {% for g in weekly_subject_goals %}
+                                <div class="col-6 col-md-3">
+                                    <label class="form-label small fw-bold font-mono mb-1" for="target_{{ g.code }}">{{ g.code }} Target (hrs)</label>
+                                    <input type="number" step="0.5" min="0.5" max="40" name="target_{{ g.code }}" id="target_{{ g.code }}" value="{{ g.target_hours }}" class="form-control form-control-sm font-mono">
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <div class="mt-3 text-end">
+                            <button type="submit" class="btn btn-primary-portal btn-sm">Save Weekly Targets</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="row g-3">
+                    {% for g in weekly_subject_goals %}
+                        <div class="col-md-6">
+                            <div class="p-3 rounded-3 bg-light border h-100">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <div>
+                                        <span class="badge bg-dark text-warning font-mono me-1">{{ g.code }}</span>
+                                        <span class="fw-bold small">{{ g.name }}</span>
+                                    </div>
+                                    <span class="font-mono small fw-bold">{{ g.logged_hours }} / {{ g.target_hours }}h ({{ g.percentage }}%)</span>
+                                </div>
+                                <div class="progress mb-2" style="height: 8px;">
+                                    <div class="progress-bar {% if g.completed %}bg-success{% else %}bg-danger{% endif %}" role="progressbar" style="width: {{ g.percentage }}%;" aria-valuenow="{{ g.percentage }}" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <form method="post" action="{% url 'portal:dashboard' %}" class="text-end">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="goal_action" value="log_minutes">
+                                    <input type="hidden" name="subject_code" value="{{ g.code }}">
+                                    <input type="hidden" name="minutes" value="30">
+                                    <button type="submit" class="btn btn-sm btn-outline-dark py-0 px-2 font-mono">+30m Log</button>
+                                </form>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Student Dashboard Feature Cards -->
+            <h5 class="fw-bold mb-3">Student Learning &amp; Academic Modules</h5>
+            <div class="row g-3 mb-4">
+                <div class="col-md-6 col-xl-4">
+                    <div class="card h-100 p-4 border rounded-4">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="fw-bold">Achievements &amp; Certificates</span>
+                            <span class="badge bg-warning text-dark font-mono">{{ earned_achievements_count }} Earned</span>
+                        </div>
+                        <p class="small text-muted flex-grow-1">View your academic achievements, completed activities and certificates.</p>
+                        <a href="{% url 'portal:achievements' %}" class="btn btn-primary-portal btn-sm">Open / View</a>
+                    </div>
+                </div>
+                <div class="col-md-6 col-xl-4">
+                    <div class="card h-100 p-4 border rounded-4">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="fw-bold">Practice Arena</span>
+                            <span class="badge bg-danger font-mono">{{ practice_attempts_count }} Attempts</span>
+                        </div>
+                        <p class="small text-muted flex-grow-1">Practice subject-wise questions, quizzes and timed tests.</p>
+                        <a href="{% url 'portal:practice_arena' %}" class="btn btn-primary-portal btn-sm">Open / View</a>
+                    </div>
+                </div>
+                <div class="col-md-6 col-xl-4">
+                    <div class="card h-100 p-4 border rounded-4">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="fw-bold">AI Flashcards &amp; Revision</span>
+                            <span class="badge bg-warning text-dark font-mono">{{ flashcard_decks_count }} Decks</span>
+                        </div>
+                        <p class="small text-muted flex-grow-1">Generate flashcards from uploaded subject PDFs and revise important concepts.</p>
+                        <a href="{% url 'portal:flashcards' %}" class="btn btn-primary-portal btn-sm">Open / View</a>
+                    </div>
+                </div>
+                <div class="col-md-6 col-xl-4">
+                    <div class="card h-100 p-4 border rounded-4">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="fw-bold">Academic Calendar &amp; Timetable</span>
+                            <span class="badge bg-secondary font-mono">{{ upcoming_events|length }} Upcoming</span>
+                        </div>
+                        <p class="small text-muted flex-grow-1">View academic events, assignment deadlines and examination schedules.</p>
+                        <a href="{% url 'portal:academic_calendar' %}" class="btn btn-primary-portal btn-sm">Open / View</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Important Notices -->
+            <div class="card p-4 border rounded-4 mb-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="fw-bold mb-0">Important Notices ({{ unread_notices_count }} Unread)</h5>
+                    {% if user.is_staff %}
+                        <a href="{% url 'portal:manage_notices' %}" class="btn btn-sm btn-outline-secondary">Manage Notices</a>
+                    {% endif %}
+                </div>
+                {% if active_notices %}
+                    <div class="list-group list-group-flush">
+                        {% for notice in active_notices %}
+                            <div class="list-group-item px-0 d-flex justify-content-between align-items-start gap-3">
+                                <div>
+                                    <span class="badge {% if notice.priority == 'Urgent' %}bg-danger{% elif notice.priority == 'Important' %}bg-warning text-dark{% else %}bg-secondary{% endif %} me-1">{{ notice.priority }}</span>
+                                    <small class="text-muted font-mono">{{ notice.category }} · {{ notice.publication_date }}</small>
+                                    <h6 class="fw-bold mt-1 mb-1">{{ notice.title }}</h6>
+                                    <p class="small text-muted mb-0">{{ notice.description }}</p>
+                                </div>
+                                <form method="post" action="{% url 'portal:mark_notice_read' notice.id %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-sm btn-outline-secondary">Mark Read</button>
+                                </form>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p class="text-muted small mb-0">No important notices available at the moment.</p>
+                {% endif %}
+            </div>
+</div>
+{% endblock %}

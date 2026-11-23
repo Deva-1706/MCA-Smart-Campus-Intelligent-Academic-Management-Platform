@@ -1,0 +1,61 @@
+{% extends 'student_base.html' %}
+{% block title %}Academic Calendar & Timetable - MCA Academic Portal{% endblock %}
+{% block content %}
+<div>
+            <h2 class="fw-bold mb-1">Academic Calendar &amp; Timetable</h2>
+            <p class="text-muted small mb-4">View academic events, assignment deadlines, examination schedules, and personal study reminders.</p>
+
+            <div class="card p-4 border rounded-4 mb-4">
+                <h5 class="fw-bold mb-3">Add Study Reminder</h5>
+                <form method="post" class="row g-3">
+                    {% csrf_token %}
+                    <div class="col-md-4">
+                        <input type="text" name="title" class="form-control" placeholder="Reminder title" required>
+                    </div>
+                    <div class="col-md-3">
+                        <input type="date" name="event_date" class="form-control" required>
+                    </div>
+                    <div class="col-md-3">
+                        <select name="subject_code" class="form-select">
+                            <option value="">General</option>
+                            {% for subj in subjects %}
+                                <option value="{{ subj.code }}">{{ subj.code }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-primary-portal w-100">Add</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <div class="card p-4 border rounded-4 h-100">
+                        <h5 class="fw-bold mb-3">Scheduled Events &amp; Reminders</h5>
+                        {% for ev in events %}
+                            <div class="border-bottom py-2">
+                                <span class="badge bg-warning text-dark font-mono">{{ ev.event_date }}</span>
+                                <strong class="ms-1">{{ ev.title }}</strong>
+                                <div class="small text-muted">{{ ev.category }}</div>
+                            </div>
+                        {% empty %}
+                            <p class="small text-muted mb-0">No official academic events or reminders scheduled yet.</p>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card p-4 border rounded-4 h-100">
+                        <h5 class="fw-bold mb-3">Weekly Timetable</h5>
+                        {% for slot in timetable_slots %}
+                            <div class="border-bottom py-2">
+                                <strong>{{ slot.day_of_week }}</strong> ({{ slot.start_time }} - {{ slot.end_time }}): {{ slot.subject.code }} - {{ slot.subject.name }}
+                            </div>
+                        {% empty %}
+                            <p class="small text-muted mb-0">Official weekly timetable has not been published yet.</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+</div>
+{% endblock %}

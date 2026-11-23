@@ -1,0 +1,452 @@
+{% extends 'public_base.html' %}
+{% load static %}
+
+{% block title %}MCA SMART CAMPUS - Beyond Academics. Built for Growth.{% endblock %}
+
+{% block content %}
+<!-- A. Home / Hero & Metric Strip -->
+<section id="home" class="public-section">
+    <div class="mca-animated-bg" aria-hidden="true">
+        <div class="mca-animated-bg__grid"></div>
+        <div class="mca-animated-bg__orb"></div>
+        <div class="mca-animated-bg__watermark">MCA</div>
+    </div>
+    <div class="container">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-9">
+                <span class="kicker-text">MCA SMART CAMPUS · Beyond Academics. Built for Growth.</span>
+                <h1 class="display-4 fw-bold hero-title mt-2 mb-3">
+                    Your Academic Journey, Smarter.
+                </h1>
+                <p class="lead hero-subtitle hero-subtitle-lead mb-4">
+                    Unite verified MCA Semester 1 coursework, AI study synthesis, isolated Python lab execution, Skill DNA verification, and role-dedicated Student, Faculty, and Admin workspaces.
+                </p>
+                <div class="d-flex flex-wrap gap-2">
+                    <a href="{% url 'portal:student_login' %}" class="btn btn-primary-portal btn-portal-eq px-4">Student Login</a>
+                    <a href="{% url 'portal:faculty_login' %}" class="btn btn-outline-portal btn-portal-eq px-4">Faculty Login</a>
+                    <a href="{% url 'portal:admin_login' %}" class="btn btn-gold btn-portal-eq px-4">Admin Login</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="metric-strip">
+            <div class="row row-cols-2 row-cols-lg-4 g-3">
+                <div class="col">
+                    <div class="metric-item">
+                        <h3 class="fw-bold mb-1 font-mono" style="color: var(--color-primary);">4</h3>
+                        <small class="text-muted fw-semibold">Confirmed Sem 1 Subjects</small>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="metric-item">
+                        <h3 class="fw-bold mb-1 font-mono text-gold">6</h3>
+                        <small class="text-muted fw-semibold">Smart Campus Modules</small>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="metric-item">
+                        <h3 class="fw-bold mb-1 font-mono text-navy">3</h3>
+                        <small class="text-muted fw-semibold">Isolated Role Workspaces</small>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="metric-item">
+                        <h3 class="fw-bold mb-1 font-mono text-navy">HCASICAN</h3>
+                        <small class="text-muted fw-semibold">Faculty Advisor</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- B. About — Mission, Vision & Semester Architecture (Semesters 1–4) -->
+<section id="about" class="public-section public-section--alt">
+    <div class="container">
+        <div class="section-heading">
+            <span class="kicker-text">About MCA SMART CAMPUS</span>
+            <h2>Programme Architecture, Mission &amp; Vision</h2>
+            <p class="section-lead">
+                Semester 1 operates with confirmed university subjects (435C1A, 435C1B, 435E1A, 435C1C). Semesters 2, 3, and 4 remain cleanly admin-configurable without fabricated dates or syllabi.
+            </p>
+        </div>
+
+        <div class="section-content">
+            <div class="row g-4 mb-4">
+                <div class="col-md-6">
+                    <div class="public-card public-card--accent">
+                        <div class="d-flex align-items-center gap-3 mb-3">
+                            <span class="public-icon-box">M</span>
+                            <h3 class="h5 fw-bold mb-0">Academic Mission</h3>
+                        </div>
+                        <p class="small text-muted mb-0" style="line-height: 1.65;">
+                            Deliver role-separated postgraduate engineering education combining PDF-grounded study synthesis, isolated Python execution, and faculty-verified practical mastery across core MCA courses.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="public-card public-card--accent">
+                        <div class="d-flex align-items-center gap-3 mb-3">
+                            <span class="public-icon-box public-icon-box--gold">V</span>
+                            <h3 class="h5 fw-bold mb-0">Institutional Vision</h3>
+                        </div>
+                        <p class="small text-muted mb-0" style="line-height: 1.65;">
+                            Equip every MCA scholar with a verifiable Skill DNA profile and curated project portfolio trusted by faculty mentors and campus recruiters.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row row-cols-1 row-cols-md-2 row-cols-xl-4 g-4">
+                <div class="col">
+                    <div class="public-card public-card--accent">
+                        <span class="badge bg-warning text-dark mb-2 align-self-start">Upcoming · Managed</span>
+                        <h4 class="h5 fw-bold mb-2">Semester 1</h4>
+                        <p class="small text-muted mb-0">435C1A, 435C1B, 435E1A, 435C1C admin-managed &amp; ready for faculty content publishing.</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="public-card">
+                        <span class="badge bg-secondary mb-2 align-self-start">Admin-Configurable</span>
+                        <h4 class="h5 fw-bold mb-2">Semester 2</h4>
+                        <p class="small text-muted mb-0">Awaiting Admin curriculum, subject, and faculty allocation setup.</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="public-card">
+                        <span class="badge bg-secondary mb-2 align-self-start">Admin-Configurable</span>
+                        <h4 class="h5 fw-bold mb-2">Semester 3</h4>
+                        <p class="small text-muted mb-0">Prepared for specialization electives &amp; capstone allocation.</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="public-card">
+                        <span class="badge bg-secondary mb-2 align-self-start">Admin-Configurable</span>
+                        <h4 class="h5 fw-bold mb-2">Semester 4</h4>
+                        <p class="small text-muted mb-0">Reserved for major project &amp; verified portfolio showcase.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- C. Subjects — Verified Semester 1 Curriculum -->
+<section id="subjects" class="public-section">
+    <div class="container">
+        <div class="section-heading d-flex flex-column flex-md-row justify-content-between align-items-md-end gap-3">
+            <div>
+                <span class="kicker-text">Confirmed Curriculum</span>
+                <h2>Semester 1 Core Subjects</h2>
+                <p class="section-lead">Four verified postgraduate core and elective subjects powering coursework, assessments, and coding labs.</p>
+            </div>
+            <a href="{% url 'portal:subjects' %}" class="btn btn-outline-portal btn-portal-eq btn-sm px-3 flex-shrink-0">View Full Syllabus Matrix →</a>
+        </div>
+
+        <div class="section-content">
+            <div class="row row-cols-1 row-cols-md-2 row-cols-xl-4 g-4">
+                <div class="col">
+                    <div class="public-card public-card--accent">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <span class="subject-badge font-mono">435C1A</span>
+                            <span class="text-muted small fw-semibold">4 Credits</span>
+                        </div>
+                        <h3 class="h5 fw-bold mb-2">Discrete Mathematics</h3>
+                        <p class="text-muted small flex-grow-1 mb-3">Propositional logic, combinatorics, graph models, and algebraic structures.</p>
+                        <a href="{% url 'portal:subject_detail' '435C1A' %}" class="btn btn-sm btn-outline-portal btn-portal-eq mt-auto">Explore Subject →</a>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="public-card public-card--accent">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <span class="subject-badge font-mono">435C1B</span>
+                            <span class="text-muted small fw-semibold">4 Credits</span>
+                        </div>
+                        <h3 class="h5 fw-bold mb-2">Data Structures &amp; Algorithms</h3>
+                        <p class="text-muted small flex-grow-1 mb-3">Asymptotic complexity, AVL/B-Trees, graphs, and dynamic programming.</p>
+                        <a href="{% url 'portal:subject_detail' '435C1B' %}" class="btn btn-sm btn-outline-portal btn-portal-eq mt-auto">Explore Subject →</a>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="public-card public-card--accent">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <span class="subject-badge font-mono">435E1A</span>
+                            <span class="text-muted small fw-semibold">3 Credits</span>
+                        </div>
+                        <h3 class="h5 fw-bold mb-2">Data Engineering &amp; Management</h3>
+                        <p class="text-muted small flex-grow-1 mb-3">Relational normalization (BCNF), SQL indexing, ACID protocols, and NoSQL.</p>
+                        <a href="{% url 'portal:subject_detail' '435E1A' %}" class="btn btn-sm btn-outline-portal btn-portal-eq mt-auto">Explore Subject →</a>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="public-card public-card--accent">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <span class="subject-badge font-mono">435C1C</span>
+                            <span class="text-muted small fw-semibold">4 Credits</span>
+                        </div>
+                        <h3 class="h5 fw-bold mb-2">Python Programming</h3>
+                        <p class="text-muted small flex-grow-1 mb-3">Dunder data models, OOP metaprogramming, NumPy arrays, and SQLite.</p>
+                        <a href="{% url 'portal:subject_detail' '435C1C' %}" class="btn btn-sm btn-outline-portal btn-portal-eq mt-auto">Explore Subject →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- D. Features — Core Academic Engine & 6 Smart Campus Modules -->
+<section id="features" class="public-section public-section--alt">
+    <div class="container">
+        <div class="section-heading">
+            <span class="kicker-text">Growth Ecosystem</span>
+            <h2>Core Academic Engine &amp; 6 Smart Campus Modules</h2>
+            <p class="section-lead">Built directly into Student, Faculty, and Admin portals with server-side verification rules.</p>
+        </div>
+
+        <div class="section-content">
+            <div class="row row-cols-1 row-cols-md-2 row-cols-xl-4 g-4 mb-4">
+                <div class="col">
+                    <div class="public-card">
+                        <div class="d-flex align-items-center gap-3 mb-3">
+                            <span class="public-icon-box">AI</span>
+                            <h3 class="h6 fw-bold mb-0">AI-Powered PDF Learning</h3>
+                        </div>
+                        <p class="small text-muted mb-0">Page-cited study notes, model answers, and grounded AI study synthesis anchored in course PDFs.</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="public-card">
+                        <div class="d-flex align-items-center gap-3 mb-3">
+                            <span class="public-icon-box public-icon-box--gold">AS</span>
+                            <h3 class="h6 fw-bold mb-0">AI Assignment Generation</h3>
+                        </div>
+                        <p class="small text-muted mb-0">Topic-based, difficulty-calibrated, and CO-aligned assignments with structured rubric grading.</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="public-card">
+                        <div class="d-flex align-items-center gap-3 mb-3">
+                            <span class="public-icon-box public-icon-box--brown">EX</span>
+                            <h3 class="h6 fw-bold mb-0">Online Examinations</h3>
+                        </div>
+                        <p class="small text-muted mb-0">Timed unit examinations with instant objective evaluation and detailed feedback breakdowns.</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="public-card">
+                        <div class="d-flex align-items-center gap-3 mb-3">
+                            <span class="public-icon-box">PY</span>
+                            <h3 class="h6 fw-bold mb-0">Isolated Python Coding Lab</h3>
+                        </div>
+                        <p class="small text-muted mb-0">Execute real Python 3 algorithms via server-side isolated runner with automated sample assertions.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-xl-3 g-4">
+                <div class="col"><div class="public-card public-card--accent"><span class="subject-badge font-mono align-self-start mb-2">01</span><h4 class="h6 fw-bold mb-1">Academic Intelligence</h4><p class="small text-muted mb-0">Topic mastery diagnostics &amp; weak-area detection.</p></div></div>
+                <div class="col"><div class="public-card public-card--accent"><span class="subject-badge font-mono align-self-start mb-2">02</span><h4 class="h6 fw-bold mb-1">Skill DNA Profile</h4><p class="small text-muted mb-0">Evidence &amp; assessment verified competencies.</p></div></div>
+                <div class="col"><div class="public-card public-card--accent"><span class="subject-badge font-mono align-self-start mb-2">03</span><h4 class="h6 fw-bold mb-1">Project Studio</h4><p class="small text-muted mb-0">Milestones, repositories &amp; faculty showcase approval.</p></div></div>
+                <div class="col"><div class="public-card public-card--accent"><span class="subject-badge font-mono align-self-start mb-2">04</span><h4 class="h6 fw-bold mb-1">Career Readiness</h4><p class="small text-muted mb-0">Interview rubrics &amp; verified skill-gap diagnostics.</p></div></div>
+                <div class="col"><div class="public-card public-card--accent"><span class="subject-badge font-mono align-self-start mb-2">05</span><h4 class="h6 fw-bold mb-1">Smart Study Planner</h4><p class="small text-muted mb-0">Weekly study blocks &amp; Pomodoro tracking.</p></div></div>
+                <div class="col"><div class="public-card public-card--accent"><span class="subject-badge font-mono align-self-start mb-2">06</span><h4 class="h6 fw-bold mb-1">Knowledge Graph</h4><p class="small text-muted mb-0">Subject-to-topic prerequisite visualization.</p></div></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- E. Important Notices -->
+<section id="important-notices" class="public-section">
+    <div class="container">
+        <div class="section-heading d-flex flex-column flex-md-row justify-content-between align-items-md-end gap-3">
+            <div>
+                <span class="kicker-text">Official Circulars &amp; Updates</span>
+                <h2>Important Notices</h2>
+                <p class="section-lead">Verified institutional announcements published directly by Campus Administration and Faculty.</p>
+            </div>
+            <span class="small text-muted">Faculty Advisor: <strong>HCASICAN</strong></span>
+        </div>
+
+        <div class="section-content">
+            {% if active_notices %}
+                <div class="row g-4">
+                    {% for notice in active_notices %}
+                        <div class="col-md-6">
+                            <div class="public-card public-card--accent">
+                                <div class="d-flex justify-content-between align-items-center mb-2 gap-2">
+                                    <span class="badge {% if notice.priority == 'Urgent' %}bg-danger{% elif notice.priority == 'Important' %}bg-warning text-dark{% else %}bg-secondary{% endif %}">
+                                        {{ notice.priority }}
+                                    </span>
+                                    <small class="text-muted font-mono">{{ notice.category }} · {{ notice.publication_date }}</small>
+                                </div>
+                                <h3 class="h5 fw-bold mb-2">{{ notice.title }}</h3>
+                                <p class="text-muted small flex-grow-1 mb-2">{{ notice.description }}</p>
+                                {% if notice.attachment %}
+                                    <a href="{{ notice.attachment.url }}" class="small fw-semibold text-decoration-none mt-auto">Download Attachment →</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-notice-box text-center">
+                    No important notices available at the moment.
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<!-- F. How It Works -->
+<section id="how-it-works" class="public-section public-section--alt">
+    <div class="container">
+        <div class="section-heading">
+            <span class="kicker-text">Academic Workflow</span>
+            <h2>How It Works</h2>
+            <p class="section-lead">Four clear stages connecting authentication, subject study, verified practical work, and postgraduate skill reporting.</p>
+        </div>
+
+        <div class="section-content">
+            <div class="row row-cols-1 row-cols-md-2 row-cols-xl-4 g-4">
+                <div class="col">
+                    <div class="public-card public-card--accent">
+                        <div class="d-flex align-items-center gap-3 mb-3">
+                            <span class="public-icon-box">01</span>
+                            <h3 class="h6 fw-bold mb-0">Role-Verified Login</h3>
+                        </div>
+                        <p class="small text-muted mb-0">Sign in through dedicated Admin, Faculty, or Student portals backed by server-side RBAC enforcement.</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="public-card public-card--accent">
+                        <div class="d-flex align-items-center gap-3 mb-3">
+                            <span class="public-icon-box public-icon-box--gold">02</span>
+                            <h3 class="h6 fw-bold mb-0">Study Core Coursework</h3>
+                        </div>
+                        <p class="small text-muted mb-0">Access Semester 1 PDFs, track scroll reading progress, and generate page-grounded study notes.</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="public-card public-card--accent">
+                        <div class="d-flex align-items-center gap-3 mb-3">
+                            <span class="public-icon-box public-icon-box--brown">03</span>
+                            <h3 class="h6 fw-bold mb-0">Practice &amp; Code Lab</h3>
+                        </div>
+                        <p class="small text-muted mb-0">Complete online examinations, isolated Python coding labs, and project studio milestones with rubric feedback.</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="public-card public-card--accent">
+                        <div class="d-flex align-items-center gap-3 mb-3">
+                            <span class="public-icon-box">04</span>
+                            <h3 class="h6 fw-bold mb-0">Verify Skill DNA</h3>
+                        </div>
+                        <p class="small text-muted mb-0">Convert faculty-approved evidence into a verified Skill DNA profile and analytics report.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- G. FAQ — Search, Category Filter & Interactive Accordion -->
+<section id="faq" class="public-section">
+    <div class="container">
+        <div class="section-heading">
+            <span class="kicker-text">Knowledge Base</span>
+            <h2>Frequently Asked Questions</h2>
+            <p class="section-lead">Search portal policies, Semester 1 coursework rules, Coding Lab execution limits, and examination workflows.</p>
+        </div>
+
+        <div class="section-content">
+            <div class="row g-3 align-items-center mb-4">
+                <div class="col-lg-5">
+                    <label for="homeFaqSearch" class="visually-hidden">Search FAQs</label>
+                    <input id="homeFaqSearch" type="search" class="form-control" placeholder="Search questions by keyword (e.g. Python, password, syllabus)...">
+                </div>
+                <div class="col-lg-7">
+                    <div class="faq-filter-bar" role="group" aria-label="Filter FAQs by category">
+                        <button type="button" class="faq-category-btn is-active" data-faq-category="All" aria-pressed="true">All</button>
+                        <button type="button" class="faq-category-btn" data-faq-category="Accounts" aria-pressed="false">Accounts</button>
+                        <button type="button" class="faq-category-btn" data-faq-category="Curriculum" aria-pressed="false">Curriculum</button>
+                        <button type="button" class="faq-category-btn" data-faq-category="Examinations" aria-pressed="false">Examinations</button>
+                        <button type="button" class="faq-category-btn" data-faq-category="Coding Lab" aria-pressed="false">Coding Lab</button>
+                        <button type="button" class="faq-category-btn" data-faq-category="Materials" aria-pressed="false">Materials</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion" id="homeFaqAccordion">
+                <div class="accordion-item faq-accordion-item" data-faq-item data-faq-cat="Accounts" data-faq-text="how do admin faculty and student logins work role separation">
+                    <h3 class="accordion-header">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse1" aria-expanded="true" aria-controls="faqCollapse1">
+                            How do Admin, Faculty, and Student login portals work?
+                        </button>
+                    </h3>
+                    <div id="faqCollapse1" class="accordion-collapse collapse show" data-bs-parent="#homeFaqAccordion">
+                        <div class="accordion-body">
+                            Each role uses its dedicated portal (/admin-login/, /faculty-login/, /student-login/) backed by a unified Django authentication system. Access is verified strictly server-side from your RoleProfile so users only enter their authorized workspace.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item faq-accordion-item" data-faq-item data-faq-cat="Curriculum" data-faq-text="which subjects are confirmed in semester 1 435c1a 435c1b 435e1a 435c1c">
+                    <h3 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse2" aria-expanded="false" aria-controls="faqCollapse2">
+                            Which subjects are included in MCA Semester 1?
+                        </button>
+                    </h3>
+                    <div id="faqCollapse2" class="accordion-collapse collapse" data-bs-parent="#homeFaqAccordion">
+                        <div class="accordion-body">
+                            Semester 1 features four verified core and elective subjects: 435C1A Discrete Mathematics, 435C1B Data Structures &amp; Algorithms, 435E1A Data Engineering &amp; Management, and 435C1C Python Programming. Semesters 2–4 are configurable by Campus Admin.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item faq-accordion-item" data-faq-item data-faq-cat="Coding Lab" data-faq-text="how does the python coding lab sandbox work execution">
+                    <h3 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse3" aria-expanded="false" aria-controls="faqCollapse3">
+                            How does the Isolated Python Coding Lab evaluate solutions?
+                        </button>
+                    </h3>
+                    <div id="faqCollapse3" class="accordion-collapse collapse" data-bs-parent="#homeFaqAccordion">
+                        <div class="accordion-body">
+                            Submitted Python 3 code executes inside a server-side isolated process with strict timeout and restricted system-module protections, comparing standard output directly against problem test expectations.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item faq-accordion-item" data-faq-item data-faq-cat="Materials" data-faq-text="how do ai study notes and reading progress work pdf learning">
+                    <h3 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse4" aria-expanded="false" aria-controls="faqCollapse4">
+                            How are PDF Study Materials and AI Study Notes grounded?
+                        </button>
+                    </h3>
+                    <div id="faqCollapse4" class="accordion-collapse collapse" data-bs-parent="#homeFaqAccordion">
+                        <div class="accordion-body">
+                            Study notes cite uploaded subject PDFs and unit chapters directly while tracking live reading scroll progress inside the student Learning Materials workspace.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item faq-accordion-item" data-faq-item data-faq-cat="Examinations" data-faq-text="how are skill dna and examination results verified">
+                    <h3 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse5" aria-expanded="false" aria-controls="faqCollapse5">
+                            How are Skill DNA competencies and examination results verified?
+                        </button>
+                    </h3>
+                    <div id="faqCollapse5" class="accordion-collapse collapse" data-bs-parent="#homeFaqAccordion">
+                        <div class="accordion-body">
+                            Examinations are scored automatically upon submission, and Skill DNA competencies advance only when backed by faculty-reviewed lab submissions, Python Coding Lab runs, or approved capstone project milestones.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="homeFaqEmptyState" class="empty-notice-box text-center d-none mt-3">
+                No matching FAQ items found. Try another keyword or reset the category filter.
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

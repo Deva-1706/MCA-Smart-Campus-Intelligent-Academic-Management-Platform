@@ -1,0 +1,90 @@
+{% extends 'student_base.html' %}
+{% block title %}Python Coding Lab - MCA Academic Portal{% endblock %}
+{% block content %}
+<div class="d-flex flex-column gap-4">
+    <div>
+        <h2 class="fw-bold mb-1">Python Coding Lab</h2>
+        <p class="text-muted small mb-0">Algorithmic programming exercises executed inside the AST-hardened Python academic sandbox.</p>
+    </div>
+
+    <div class="row g-3">
+        {% for prob in problems %}
+            <div class="col-md-6">
+                <div class="card p-4 border rounded-4 h-100 d-flex flex-column justify-content-between gap-2">
+                    <div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="badge bg-warning text-dark">{{ prob.difficulty }}</span>
+                            <small class="text-muted font-mono">{{ prob.category }}</small>
+                        </div>
+                        <h5 class="fw-bold">{{ prob.title }}</h5>
+                        <p class="small text-muted mb-2">{{ prob.description }}</p>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-outline-portal align-self-start load-starter-btn" data-starter="{{ prob.starter_code|escape }}">Load into Editor</button>
+                </div>
+            </div>
+        {% empty %}
+            <div class="col-12"><div class="card p-4 border rounded-4 text-muted">No coding lab problems published yet.</div></div>
+        {% endfor %}
+    </div>
+
+    <div class="card p-4 border rounded-4">
+        <h5 class="fw-bold mb-3">Isolated Python Execution Console</h5>
+        <form id="codingLabForm" class="d-flex flex-column gap-3">
+            {% csrf_token %}
+            <div>
+                <label class="form-label small fw-semibold" for="labCodeInput">Python Source Code</label>
+                <textarea id="labCodeInput" name="code" rows="8" class="form-control font-mono small" spellcheck="false" placeholder="print('Hello MCA Smart Campus')">print("Hello MCA Smart Campus")</textarea>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+                <button type="submit" id="runLabBtn" class="btn btn-sm btn-primary-portal">Run Python Code</button>
+                <span id="labStatus" class="small text-muted font-mono"></span>
+            </div>
+            <div>
+                <label class="form-label small fw-semibold">Console Output</label>
+                <pre id="labOutput" class="p-3 rounded-3 bg-dark text-light small font-mono mb-0" style="min-height: 80px; white-space: pre-wrap;">Ready.</pre>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+(function () {
+    const form = document.getElementById('codingLabForm');
+    const codeInput = document.getElementById('labCodeInput');
+    const outputEl = document.getElementById('labOutput');
+    const statusEl = document.getElementById('labStatus');
+    document.querySelectorAll('.load-starter-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            codeInput.value = btn.getAttribute('data-starter') || '';
+        });
+    });
+    if (!form) return;
+    form.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        statusEl.textContent = 'Running...';
+        const csrfInput = form.querySelector('input[name="csrfmiddlewaretoken"]');
+        const body = new URLSearchParams({ code: codeInput.value });
+        try {
+            const resp = await fetch("{% url 'portal:coding_lab_execute' %}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-CSRFToken': csrfInput ? csrfInput.value : ''
+                },
+                body: body.toString()
+            });
+            const data = await resp.json();
+            if (!resp.ok || data.error) {
+                statusEl.textContent = 'Blocked / Error (' + resp.status + ')';
+                outputEl.textContent = data.error || data.stderr || 'Execution rejected.';
+                return;
+            }
+            statusEl.textContent = 'Exit ' + data.returncode + ' · ' + data.elapsed_ms + ' ms';
+            outputEl.textContent = [data.stdout, data.stderr].filter(Boolean).join('\n---\n') || '(no output)';
+        } catch (err) {
+            statusEl.textContent = 'Network error';
+            outputEl.textContent = 'Unable to reach Python sandbox endpoint.';
+        }
+    });
+})();
+</script>
+{% endblock %}

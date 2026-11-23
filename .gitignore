@@ -1,0 +1,65 @@
+# Node & Frontend build artifacts
+node_modules/
+build/
+dist/
+dev-dist/
+coverage/
+
+# OS & Logs
+.DS_Store
+Thumbs.db
+*.log
+
+# Environment & Secret files (never commit secrets)
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+secrets.*
+local_settings.py
+
+# Python bytecode, virtualenvs & test caches
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+
+# Django collected static & SQLite transient files
+staticfiles/
+db.sqlite3-journal
+db.sqlite3-wal
+db.sqlite3-shm
+
+# Database backups & dumps containing user records
+backups/
+db_backups/
+*.sql
+*.sql.gz
+*.dump
+*.bak
+
+# Private user uploads & submitted files
+media/uploads/
+media/submissions/
+media/private/
+media/notices/
+media/materials/
+
+# Local database files
+db.sqlite3
+*.sqlite3
+
+# Uploaded media and user documents
+media/
+
+# Django temporary files
+*.pyc
+
+mca_portal/urls.py.backup

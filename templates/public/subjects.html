@@ -1,0 +1,32 @@
+{% extends 'public_base.html' %}
+{% block title %}Subjects - MCA Academic Portal{% endblock %}
+{% block content %}
+<section class="py-5">
+    <div class="container">
+        <span class="kicker-text">Semester 1 Curriculum</span>
+        <h1 class="fw-bold text-navy mt-2 mb-4">MCA Semester 1 Subjects</h1>
+        <div class="row g-4">
+            {% for subject in subjects %}
+                <div class="col-md-6">
+                    <div class="card subject-card p-4 border rounded-4 h-100">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="subject-badge font-mono">{{ subject.code }}</span>
+                            <span class="small text-muted">{{ subject.credits }} Credits · {{ subject.subject_type }}</span>
+                        </div>
+                        <h4 class="fw-bold text-navy mb-2">{{ subject.name }}</h4>
+                        <p class="small text-muted mb-3">{{ subject.description }}</p>
+                        <div class="d-flex justify-content-between align-items-center mt-auto pt-2 border-top">
+                            <small class="text-muted">Instructor: {{ subject.instructor }}</small>
+                            <a href="{% url 'portal:subject_detail' subject.code %}" class="btn btn-sm btn-outline-portal">View Syllabus →</a>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <div class="col-12">
+                    <div class="card p-4 border rounded-4 text-muted">Syllabus subjects are loading. Log into the Student Portal to view full semester modules.</div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

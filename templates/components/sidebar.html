@@ -1,0 +1,136 @@
+{% load static %}
+<aside class="student-sidebar p-3 border-end h-100 bg-surface">
+    <div class="student-profile-mini mb-3 pb-3 border-bottom">
+        <div class="d-flex align-items-center gap-3">
+            <div class="student-avatar-circle">
+                {{ user.first_name|default:user.username|slice:":1"|upper }}
+            </div>
+            <div class="overflow-hidden">
+                <h6 class="mb-0 text-truncate fw-bold text-navy">{{ user.get_full_name|default:user.username }}</h6>
+                <small class="text-muted font-mono">{{ user.studentprofile.roll_number|default:"P26CA125" }} · Sem 1</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="small fw-bold text-uppercase text-muted px-2 mb-2" style="font-size: 0.7rem; letter-spacing: 0.08em;">
+        Student Portal
+    </div>
+
+    <ul class="nav flex-column gap-1 sidebar-nav-list">
+        <li class="nav-item">
+            <a href="{% url 'portal:dashboard' %}" class="nav-link {% if active_tab == 'dashboard' %}active{% endif %}">
+                <span class="nav-icon">📊</span> Dashboard
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{% url 'portal:my_subjects' %}" class="nav-link {% if active_tab == 'my_subjects' %}active{% endif %}">
+                <span class="nav-icon">📚</span> My Subjects
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{% url 'portal:assignments' %}" class="nav-link {% if active_tab == 'assignments' %}active{% endif %}">
+                <span class="nav-icon">📋</span> Assignments
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{% url 'portal:examinations' %}" class="nav-link {% if active_tab == 'examinations' %}active{% endif %}">
+                <span class="nav-icon">📝</span> Examinations
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{% url 'portal:coding_lab' %}" class="nav-link {% if active_tab == 'coding_lab' %}active{% endif %}">
+                <span class="nav-icon">💻</span> Python Coding Lab
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{% url 'portal:materials' %}" class="nav-link {% if active_tab == 'materials' %}active{% endif %}">
+                <span class="nav-icon">📖</span> Learning Materials
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{% url 'portal:bookmarks' %}" class="nav-link {% if active_tab == 'bookmarks' %}active{% endif %}">
+                <span class="nav-icon">🔖</span> Bookmarks
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{% url 'portal:analytics' %}" class="nav-link {% if active_tab == 'analytics' %}active{% endif %}">
+                <span class="nav-icon">📈</span> Performance Analytics
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{% url 'portal:reports' %}" class="nav-link {% if active_tab == 'reports' %}active{% endif %}">
+                <span class="nav-icon">📄</span> Academic Reports
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{% url 'portal:achievements' %}" class="nav-link {% if active_tab == 'achievements' %}active{% endif %}">
+                <span class="nav-icon">🏆</span> Achievements &amp; Certificates
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{% url 'portal:practice_arena' %}" class="nav-link {% if active_tab == 'practice_arena' %}active{% endif %}">
+                <span class="nav-icon">🎯</span> Practice Arena
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{% url 'portal:flashcards' %}" class="nav-link {% if active_tab == 'flashcards' %}active{% endif %}">
+                <span class="nav-icon">🗂️</span> AI Flashcards &amp; Revision
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{% url 'portal:academic_calendar' %}" class="nav-link {% if active_tab == 'academic_calendar' %}active{% endif %}">
+                <span class="nav-icon">📅</span> Academic Calendar &amp; Timetable
+            </a>
+        </li>
+        <li class="nav-item mt-2 pt-2 border-top">
+            <span class="small fw-bold text-uppercase text-muted px-2 d-block mb-1" style="font-size: 0.65rem; letter-spacing: 0.08em;">
+                Smart Campus Growth
+            </span>
+        </li>
+        <li class="nav-item">
+            <a href="{% url 'portal:academic_intelligence' %}" class="nav-link {% if active_tab == 'academic_intelligence' %}active{% endif %}">
+                <span class="nav-icon">🧠</span> Academic Intelligence
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{% url 'portal:skill_dna' %}" class="nav-link {% if active_tab == 'skill_dna' %}active{% endif %}">
+                <span class="nav-icon">🧬</span> Skill DNA Profile
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{% url 'portal:project_studio' %}" class="nav-link {% if active_tab == 'project_studio' %}active{% endif %}">
+                <span class="nav-icon">🚀</span> Project Studio
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{% url 'portal:career_readiness' %}" class="nav-link {% if active_tab == 'career_readiness' %}active{% endif %}">
+                <span class="nav-icon">💼</span> Career Readiness
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{% url 'portal:study_planner' %}" class="nav-link {% if active_tab == 'study_planner' %}active{% endif %}">
+                <span class="nav-icon">🗓️</span> Smart Study Planner
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{% url 'portal:knowledge_graph' %}" class="nav-link {% if active_tab == 'knowledge_graph' %}active{% endif %}">
+                <span class="nav-icon">🕸️</span> Knowledge Graph
+            </a>
+        </li>
+        <li class="nav-item mt-2 pt-2 border-top">
+            <a href="{% url 'portal:profile' %}" class="nav-link {% if active_tab == 'profile' %}active{% endif %}">
+                <span class="nav-icon">👤</span> Student Profile
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{% url 'portal:notifications' %}" class="nav-link {% if active_tab == 'notifications' %}active{% endif %}">
+                <span class="nav-icon">🔔</span> Notifications
+            </a>
+        </li>
+        <li class="nav-item mt-3 pt-2 border-top">
+            <a href="{% url 'portal:logout' %}" class="btn btn-outline-danger w-100 text-start py-2 fw-semibold">
+                <span class="nav-icon">🚪</span> Logout
+            </a>
+        </li>
+    </ul>
+</aside>

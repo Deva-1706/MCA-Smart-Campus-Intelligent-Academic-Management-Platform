@@ -1,0 +1,6 @@
+{
+  "name": "MCA Academic Assessment & Learning Portal",
+  "description": "Comprehensive MCA Semester 1 academic portal with digital learning resources, online examinations, Python coding lab, analytics, and Django template integration.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

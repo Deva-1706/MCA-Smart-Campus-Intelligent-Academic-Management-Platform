@@ -1,0 +1,44 @@
+{% extends 'public_base.html' %}
+{% block title %}Contact - MCA Academic Portal{% endblock %}
+{% block content %}
+<section class="py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-7">
+                <span class="kicker-text">Academic Helpdesk</span>
+                <h1 class="fw-bold text-navy mt-2 mb-3">Contact Administration</h1>
+                <p class="text-muted small mb-4">Submit account, examination, or syllabus inquiries to the MCA Semester 1 academic office.</p>
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags|default:'info' }}{% endif %} small" role="alert">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                <div class="card p-4 border rounded-4">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label class="form-label small fw-semibold">Full Name</label>
+                            <input type="text" name="full_name" value="{{ form_data.full_name|default:'' }}" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-semibold">Email Address</label>
+                            <input type="email" name="email" value="{{ form_data.email|default:'' }}" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-semibold">Subject</label>
+                            <input type="text" name="subject" value="{{ form_data.subject|default:'' }}" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-semibold">Message</label>
+                            <textarea name="message" rows="4" minlength="10" class="form-control" required>{{ form_data.message|default:'' }}</textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary-portal">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

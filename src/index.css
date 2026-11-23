@@ -1,0 +1,379 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --color-primary: #B83232;
+  --color-primary-hover: #9E2A2A;
+  --color-secondary: #795548;
+  --color-secondary-light: #8D6E63;
+  --color-accent: #F2C94C;
+  --color-accent-hover: #DDB038;
+  --color-dark: #292929;
+  --color-dark-surface: #1E1E1E;
+  --color-white: #FFFFFF;
+  --color-background: #F7F5F2;
+  --color-surface: #FFFFFF;
+  --color-surface-alt: #EFEBE9;
+  --color-border: #E5DFD9;
+  --color-text: #292929;
+  --color-text-muted: #6E6863;
+
+  /* Public Homepage Design Tokens */
+  --public-max-width: 80rem;
+  --public-section-py: 3.5rem;
+  --public-section-gap: 2rem;
+  --public-card-radius: 1rem;
+  --public-card-padding: 1.5rem;
+  --public-grid-gap: 1.5rem;
+  --public-btn-height: 2.75rem;
+}
+
+html.dark {
+  --color-background: #1A1A1A;
+  --color-surface: #292929;
+  --color-surface-alt: #232120;
+  --color-dark: #121212;
+  --color-border: #3D3835;
+  --color-text: #F7F5F2;
+  --color-text-muted: #BDB7B2;
+}
+
+@media (min-width: 640px) {
+  :root {
+    --public-section-py: 4.5rem;
+  }
+}
+
+@layer base {
+  html {
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background-color: var(--color-background);
+    color: var(--color-text);
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+  }
+
+  code, pre, kbd, samp {
+    font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  }
+}
+
+/* Unified Public Homepage Layout, Typography & Card Tokens */
+.public-section {
+  padding-top: var(--public-section-py);
+  padding-bottom: var(--public-section-py);
+  scroll-margin-top: 5rem;
+  background-color: var(--color-background);
+}
+
+.public-section--alt {
+  background-color: var(--color-surface-alt);
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.public-section--dark {
+  background-color: #292929;
+  color: #F7F5F2;
+  border-top: 1px solid #3D3835;
+  border-bottom: 1px solid #3D3835;
+}
+
+html.dark .public-section--dark {
+  background-color: #161514;
+}
+
+.public-container {
+  width: 100%;
+  max-width: var(--public-max-width);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@media (min-width: 640px) {
+  .public-container {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .public-container {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+.public-section-heading {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: var(--public-section-gap);
+}
+
+@media (min-width: 640px) {
+  .public-section-heading--split {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+}
+
+.public-kicker {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 800;
+  line-height: 1.25;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+}
+
+html.dark .public-kicker {
+  color: var(--color-accent);
+}
+
+.public-section--dark .public-kicker {
+  color: var(--color-accent);
+}
+
+.public-title {
+  font-size: clamp(1.5rem, 2.5vw, 2rem);
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--color-text);
+  margin-top: 0.35rem;
+}
+
+.public-section--dark .public-title {
+  color: #FFFFFF;
+}
+
+.public-subtitle {
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  color: var(--color-text-muted);
+  max-width: 65ch;
+  margin-top: 0.45rem;
+}
+
+.public-section--dark .public-subtitle {
+  color: #D7CCC8;
+}
+
+.public-grid {
+  display: grid;
+  gap: var(--public-grid-gap);
+}
+
+.public-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--public-card-radius);
+  padding: var(--public-card-padding);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.public-card:hover {
+  border-color: var(--color-secondary);
+}
+
+.public-card--accent {
+  border-top: 4px solid var(--color-primary);
+}
+
+.public-card--dark {
+  background-color: #1E1E1E;
+  border-color: #3D3835;
+  color: #F7F5F2;
+}
+
+.public-icon-box {
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.public-btn {
+  min-height: var(--public-btn-height);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 0.5rem;
+  font-weight: 700;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(121, 85, 72, 0.4);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(184, 50, 50, 0.6);
+}
+
+@keyframes dropdownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-dropdown-in {
+  animation: dropdownFadeIn 150ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes authSuccessFadeScale {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes authCheckRingPop {
+  0% {
+    opacity: 0;
+    transform: scale(0.75);
+  }
+  65% {
+    opacity: 1;
+    transform: scale(1.06);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes authCheckDraw {
+  from {
+    stroke-dashoffset: 28;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes authSuccessSweep {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.animate-auth-success-in {
+  animation: authSuccessFadeScale 240ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-auth-check-ring {
+  animation: authCheckRingPop 360ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.animate-auth-check-stroke {
+  stroke-dasharray: 28;
+  stroke-dashoffset: 28;
+  animation: authCheckDraw 320ms cubic-bezier(0.22, 1, 0.36, 1) 120ms forwards;
+}
+
+.animate-auth-success-sweep {
+  transform-origin: left center;
+  animation: authSuccessSweep 480ms linear forwards;
+}
+
+@keyframes mcaPublicDrift {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(18px, -14px, 0) scale(1.03);
+  }
+}
+
+@keyframes mcaGridShift {
+  0% {
+    background-position: 0 0, 0 0;
+  }
+  100% {
+    background-position: 48px 48px, 48px 48px;
+  }
+}
+
+.mca-public-animated-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.mca-public-animated-bg__grid {
+  position: absolute;
+  inset: -48px;
+  background-image:
+    linear-gradient(to right, rgba(121, 85, 72, 0.055) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(121, 85, 72, 0.055) 1px, transparent 1px);
+  background-size: 48px 48px;
+  animation: mcaGridShift 28s linear infinite;
+}
+
+html.dark .mca-public-animated-bg__grid {
+  background-image:
+    linear-gradient(to right, rgba(242, 201, 76, 0.045) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(242, 201, 76, 0.045) 1px, transparent 1px);
+}
+
+.mca-public-animated-bg__orb {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(56px);
+  animation: mcaPublicDrift 18s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-auth-success-in,
+  .animate-auth-check-ring,
+  .animate-auth-check-stroke,
+  .animate-auth-success-sweep {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    stroke-dashoffset: 0 !important;
+  }
+
+  .mca-public-animated-bg__grid,
+  .mca-public-animated-bg__orb {
+    animation: none !important;
+    transform: none !important;
+  }
+}

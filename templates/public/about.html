@@ -1,0 +1,33 @@
+{% extends 'public_base.html' %}
+{% block title %}About - MCA Academic Portal{% endblock %}
+{% block content %}
+<section class="py-5">
+    <div class="container">
+        <span class="kicker-text">Academic Platform Overview</span>
+        <h1 class="fw-bold text-navy mt-2 mb-3">About the MCA Semester 1 Portal</h1>
+        <p class="lead text-muted mb-4">
+            Built for Master of Computer Applications Semester 1 candidates to unify syllabus tracking, faculty lecture PDFs, Python laboratory practice, continuous assessments, and academic analytics.
+        </p>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card p-4 border rounded-4 h-100">
+                    <h5 class="fw-bold text-navy">Curriculum Alignment</h5>
+                    <p class="small text-muted mb-0">Covers all four Semester 1 core papers: Discrete Mathematics (435C1A), Data Structures &amp; Algorithms (435C1B), Data Engineering &amp; Management (435E1A), and Python Programming (435C1C).</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card p-4 border rounded-4 h-100">
+                    <h5 class="fw-bold text-navy">Faculty-Verified Workflows</h5>
+                    <p class="small text-muted mb-0">Official notices, verified examination records, and academic timetables maintain strict academic integrity.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card p-4 border rounded-4 h-100">
+                    <h5 class="fw-bold text-navy">Student Privacy</h5>
+                    <p class="small text-muted mb-0">Every student dashboard, note deck, and practice attempt is authenticated and isolated per enrolled account.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

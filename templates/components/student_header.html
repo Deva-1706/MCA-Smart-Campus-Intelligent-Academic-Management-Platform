@@ -1,0 +1,54 @@
+{% load static %}
+<header class="student-portal-header sticky-top border-bottom d-print-none">
+    <div class="container-fluid px-3 px-lg-4">
+        <div class="d-flex align-items-center justify-content-between py-2 gap-3">
+            <!-- Left: Mobile Sidebar Toggle & Student Portal Branding -->
+            <div class="d-flex align-items-center gap-2 gap-md-3 min-w-0">
+                <button
+                    class="btn btn-outline-warning btn-sm d-lg-none fw-bold"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#studentSidebarDrawer"
+                    aria-controls="studentSidebarDrawer"
+                    aria-expanded="false"
+                    aria-label="Toggle student sidebar navigation"
+                >
+                    ☰ Menu
+                </button>
+
+                <a class="d-flex align-items-center gap-2 text-decoration-none" href="{% url 'portal:dashboard' %}">
+                    <span class="portal-brand-badge">MCA</span>
+                    <div class="d-flex flex-column lh-sm">
+                        <span class="brand-text small fw-bold">MCA SMART CAMPUS</span>
+                        <small class="text-gold font-mono" style="font-size: 0.7rem;">
+                            Student Portal · {{ user.studentprofile.student_id|default:"MCA2401" }}
+                        </small>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Right: Student Info, Notifications, Theme Toggle & Logout (No Public Nav Links) -->
+            <div class="d-flex align-items-center gap-2 shrink-0">
+                <a href="{% url 'portal:notifications' %}" class="btn btn-sm btn-outline-light position-relative" aria-label="Student Notifications">
+                    <span>Notifications</span>
+                    {% if unread_notifications_count %}
+                        <span class="badge bg-danger ms-1">{{ unread_notifications_count }}</span>
+                    {% endif %}
+                </a>
+
+                <button class="btn btn-theme-toggle btn-sm" id="themeToggleBtn" type="button" aria-label="Toggle Light and Dark Theme">
+                    <span class="theme-icon-light">☀️</span>
+                    <span class="theme-icon-dark">🌙</span>
+                </button>
+
+                <a href="{% url 'portal:profile' %}" class="btn btn-sm btn-outline-warning d-none d-md-inline-flex align-items-center gap-1 fw-semibold">
+                    <span>{{ user.get_full_name|default:user.username }}</span>
+                </a>
+
+                <a href="{% url 'portal:logout' %}" class="btn btn-sm btn-primary-portal fw-bold">
+                    Logout
+                </a>
+            </div>
+        </div>
+    </div>
+</header>

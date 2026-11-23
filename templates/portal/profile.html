@@ -1,0 +1,22 @@
+{% extends 'student_base.html' %}
+{% block title %}Student Profile - MCA Academic Portal{% endblock %}
+{% block content %}
+<div>
+    <h2 class="fw-bold mb-1">Student Profile</h2>
+    <p class="text-muted small mb-4">Enrolled candidate credentials and faculty advisor details.</p>
+    <div class="card p-4 border rounded-4">
+        <dl class="row mb-0 small">
+            <dt class="col-sm-3 text-muted">Student Name</dt>
+            <dd class="col-sm-9 fw-bold">{{ display_name }}</dd>
+            <dt class="col-sm-3 text-muted">Username</dt>
+            <dd class="col-sm-9 font-mono">{{ user.username }}</dd>
+            <dt class="col-sm-3 text-muted">Student ID</dt>
+            <dd class="col-sm-9 font-mono">{{ user.studentprofile.student_id|default:"MCA2401" }}</dd>
+            <dt class="col-sm-3 text-muted">Roll Number</dt>
+            <dd class="col-sm-9 font-mono">{{ user.studentprofile.roll_number|default:"P26CA125" }}</dd>
+            <dt class="col-sm-3 text-muted">Faculty Advisor</dt>
+            <dd class="col-sm-9 fw-semibold">{{ user.studentprofile.advisor_name|default:"HCASICAN" }}</dd>
+        </dl>
+    </div>
+</div>
+{% endblock %}

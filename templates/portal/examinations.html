@@ -1,0 +1,58 @@
+{% extends 'student_base.html' %}
+{% block title %}Examinations - MCA Academic Portal{% endblock %}
+{% block content %}
+<div class="d-flex flex-column gap-4">
+    <div>
+        <h2 class="fw-bold mb-1">Examinations</h2>
+        <p class="text-muted small mb-0">Scheduled assessments, timed examinations, and evaluation records.</p>
+    </div>
+    <div class="row g-3">
+        {% for exam in exams %}
+            <div class="col-md-6">
+                <div class="card p-4 border rounded-4 h-100 d-flex flex-column justify-content-between gap-3">
+                    <div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="badge bg-danger font-mono">{{ exam.subject.code }}</span>
+                            <span class="small text-muted font-mono">{{ exam.duration_minutes }} mins · {{ exam.total_marks }} Marks</span>
+                        </div>
+                        <h5 class="fw-bold">{{ exam.title }}</h5>
+                        <p class="small text-muted mb-0">Due Date: {{ exam.due_date }} · Passing: {{ exam.passing_marks }}</p>
+                    </div>
+                    <form method="post" class="d-flex gap-2 align-items-center">
+                        {% csrf_token %}
+                        <input type="hidden" name="examination_id" value="{{ exam.id }}">
+                        <input type="number" name="score" min="0" max="{{ exam.total_marks }}" value="{{ exam.passing_marks }}" class="form-control form-control-sm" style="max-width: 110px;" required>
+                        <button type="submit" class="btn btn-sm btn-primary-portal">Record Score</button>
+                    </form>
+                </div>
+            </div>
+        {% empty %}
+            <div class="col-12"><div class="card p-4 border rounded-4 text-muted">No scheduled examinations available right now.</div></div>
+        {% endfor %}
+    </div>
+
+    <div class="card p-4 border rounded-4">
+        <h5 class="fw-bold mb-3">Recorded Examination Results</h5>
+        {% if results %}
+            <div class="table-responsive">
+                <table class="table table-sm small align-middle mb-0">
+                    <thead><tr><th>Examination</th><th>Subject</th><th>Score</th><th>Result</th><th>Recorded</th></tr></thead>
+                    <tbody>
+                        {% for res in results %}
+                        <tr>
+                            <td class="fw-semibold">{{ res.examination.title }}</td>
+                            <td class="font-mono">{{ res.examination.subject.code }}</td>
+                            <td class="font-mono">{{ res.score }}/{{ res.examination.total_marks }}</td>
+                            <td><span class="badge {% if res.passed %}bg-success{% else %}bg-danger{% endif %}">{% if res.passed %}Passed{% else %}Needs Review{% endif %}</span></td>
+                            <td class="text-muted font-mono">{{ res.submitted_at|date:"Y-m-d H:i" }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <p class="small text-muted mb-0">No examination attempts recorded yet.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

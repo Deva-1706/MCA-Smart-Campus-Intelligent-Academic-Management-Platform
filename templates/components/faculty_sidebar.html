@@ -1,0 +1,20 @@
+<aside class="faculty-sidebar p-3 border-end h-100 bg-surface">
+    <div class="small fw-bold text-uppercase text-muted px-2 mb-2" style="font-size: 0.7rem; letter-spacing: 0.08em;">
+        Faculty Workspace
+    </div>
+    <ul class="nav flex-column gap-1 sidebar-nav-list">
+        <li class="nav-item"><a href="{% url 'portal:faculty_overview' %}" class="nav-link {% if active_tab == 'faculty_overview' %}active{% endif %}">Faculty Dashboard</a></li>
+        <li class="nav-item"><a href="{% url 'portal:faculty_subjects' %}" class="nav-link {% if active_tab == 'faculty_subjects' %}active{% endif %}">Assigned Subjects</a></li>
+        <li class="nav-item"><a href="{% url 'portal:faculty_materials' %}" class="nav-link {% if active_tab == 'faculty_materials' %}active{% endif %}">Faculty Document Mgmt</a></li>
+        <li class="nav-item"><a href="{% url 'portal:faculty_question_bank' %}" class="nav-link {% if active_tab == 'faculty_question_bank' %}active{% endif %}">Question Bank</a></li>
+        <li class="nav-item"><a href="{% url 'portal:faculty_assessments' %}" class="nav-link {% if active_tab == 'faculty_assessments' %}active{% endif %}">Assessments &amp; Exams</a></li>
+        <li class="nav-item"><a href="{% url 'portal:faculty_coding_lab' %}" class="nav-link {% if active_tab == 'faculty_coding_lab' %}active{% endif %}">Coding Lab Authoring</a></li>
+        <li class="nav-item"><a href="{% url 'portal:faculty_submissions' %}" class="nav-link {% if active_tab == 'faculty_submissions' %}active{% endif %}">Evaluate Submissions</a></li>
+        <li class="nav-item"><a href="{% url 'portal:faculty_projects' %}" class="nav-link {% if active_tab == 'faculty_projects' %}active{% endif %}">Project Review</a></li>
+        <li class="nav-item"><a href="{% url 'portal:faculty_skill_dna' %}" class="nav-link {% if active_tab == 'faculty_skill_dna' %}active{% endif %}">Skill DNA Verification</a></li>
+        <li class="nav-item"><a href="{% url 'portal:faculty_knowledge_graph' %}" class="nav-link {% if active_tab == 'faculty_knowledge_graph' %}active{% endif %}">Knowledge Graph Links</a></li>
+        <li class="nav-item mt-3 pt-2 border-top">
+            <a href="{% url 'portal:logout' %}" class="btn btn-outline-danger w-100 text-start py-2 fw-semibold">Logout</a>
+        </li>
+    </ul>
+</aside>

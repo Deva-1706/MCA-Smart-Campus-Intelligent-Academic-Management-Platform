@@ -1,0 +1,19 @@
+<aside class="admin-sidebar p-3 border-end h-100 bg-surface">
+    <div class="small fw-bold text-uppercase text-muted px-2 mb-2" style="font-size: 0.7rem; letter-spacing: 0.08em;">
+        Admin Governance
+    </div>
+    <ul class="nav flex-column gap-1 sidebar-nav-list">
+        <li class="nav-item"><a href="{% url 'portal:admin_overview' %}" class="nav-link {% if active_tab == 'admin_overview' %}active{% endif %}">Overview Dashboard</a></li>
+        <li class="nav-item"><a href="{% url 'portal:admin_users' %}" class="nav-link {% if active_tab == 'admin_users' %}active{% endif %}">Users &amp; Roles</a></li>
+        <li class="nav-item"><a href="{% url 'portal:admin_academics' %}" class="nav-link {% if active_tab == 'admin_academics' %}active{% endif %}">Semesters 1–4 &amp; Subjects</a></li>
+        <li class="nav-item"><a href="{% url 'portal:admin_allocations' %}" class="nav-link {% if active_tab == 'admin_allocations' %}active{% endif %}">Faculty Allocations</a></li>
+        <li class="nav-item"><a href="{% url 'portal:admin_materials' %}" class="nav-link {% if active_tab == 'admin_materials' %}active{% endif %}">Faculty Document Mgmt</a></li>
+        <li class="nav-item"><a href="{% url 'portal:admin_notices' %}" class="nav-link {% if active_tab == 'admin_notices' %}active{% endif %}">Notice Governance</a></li>
+        <li class="nav-item"><a href="{% url 'portal:admin_certificates' %}" class="nav-link {% if active_tab == 'admin_certificates' %}active{% endif %}">Issued Certificates</a></li>
+        <li class="nav-item"><a href="{% url 'portal:admin_settings' %}" class="nav-link {% if active_tab == 'admin_settings' %}active{% endif %}">Feature Flags &amp; Settings</a></li>
+        <li class="nav-item"><a href="{% url 'portal:admin_audit_logs' %}" class="nav-link {% if active_tab == 'admin_audit_logs' %}active{% endif %}">Audit Trail</a></li>
+        <li class="nav-item mt-3 pt-2 border-top">
+            <a href="{% url 'portal:logout' %}" class="btn btn-outline-danger w-100 text-start py-2 fw-semibold">Logout</a>
+        </li>
+    </ul>
+</aside>
